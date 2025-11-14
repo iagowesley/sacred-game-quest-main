@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 30 100% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 100% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 100% 20%;
+
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 20% 95%;
+    --secondary-foreground: 30 100% 20%;
+
+    --muted: 30 20% 95%;
+    --muted-foreground: 30 50% 40%;
+
+    --accent: 35 100% 60%;
+    --accent-foreground: 30 100% 20%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --board-square: 30 100% 70%;
+    --board-bonus: 142 76% 45%;
+    --board-forward: 35 100% 55%;
+    --board-back: 0 84% 60%;
+
+    --border: 30 32% 91%;
+    --input: 30 32% 91%;
+    --ring: 30 100% 50%;
+
+    --radius: 0rem;
+    
+    --shadow-card: 0 10px 40px -10px hsl(30 100% 50% / 0.3);
+    --shadow-glow: 0 0 30px hsl(30 100% 50% / 0.4);
+    --shadow-piece: 0 4px 12px hsl(0 0% 0% / 0.25);
+    --shadow-card-3d: 0 20px 60px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2);
+    --shadow-gold: 0 0 30px hsl(35 100% 60% / 0.5);
+    --card-texture: linear-gradient(135deg, transparent 25%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.03) 75%, rgba(255, 255, 255, 0.03));
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5% 26%;
+    --sidebar-primary: 240 6% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 262 83% 58%;
+  }
+
+  .dark {
+    --background: 30 100% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 30 100% 15%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 30 100% 15%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 50% 20%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 30 50% 20%;
+    --muted-foreground: 30 20% 65%;
+
+    --accent: 35 100% 60%;
+    --accent-foreground: 30 100% 10%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 30 50% 20%;
+    --input: 30 50% 20%;
+    --ring: 30 100% 50%;
+
+    --sidebar-background: 30 100% 10%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 30 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 30 50% 15%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 30 50% 15%;
+    --sidebar-ring: 30 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-bounce-piece {
+    animation: bounce-piece 0.5s ease-in-out;
+  }
+  
+  @keyframes bounce-piece {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .animate-move-forward {
+    animation: move-forward 0.6s ease-out;
+  }
+  
+  @keyframes move-forward {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes card-entrance {
+    0% { 
+      transform: scale(0.5) rotateZ(-10deg);
+      opacity: 0;
+    }
+    60% { 
+      transform: scale(1.05) rotateZ(2deg);
+    }
+    100% { 
+      transform: scale(1) rotateZ(0deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dice-roll {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(90deg) scale(1.1); }
+    50% { transform: rotate(180deg) scale(0.9); }
+    75% { transform: rotate(270deg) scale(1.1); }
+  }
+
+  @keyframes dice-roll-3d {
+    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    25% { transform: rotateX(180deg) rotateY(90deg) rotateZ(45deg); }
+    50% { transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg); }
+    75% { transform: rotateX(540deg) rotateY(270deg) rotateZ(135deg); }
+    100% { transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg); }
+  }
+
+  .animate-card-entrance {
+    animation: card-entrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .animate-dice-roll {
+    animation: dice-roll 0.5s ease-in-out;
+  }
+
+  .animate-dice-roll-3d {
+    animation: dice-roll-3d 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
