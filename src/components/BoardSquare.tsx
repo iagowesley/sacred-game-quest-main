@@ -38,38 +38,44 @@ export const BoardSquare = ({ square, size = 60 }: BoardSquareProps) => {
 
   return (
     <div
-      className={`${getSquareColor()} flex flex-col items-center justify-center shadow-lg border-3 ${
-        isSpecialSquare ? 'border-white' : 'border-white/50'
-      } relative transition-all hover:scale-105 ${
-        isStartOrEnd ? 'ring-4 ring-accent ring-offset-2' : ''
-      }`}
-      style={{ width: size, height: size }}
+      className={`flex flex-col items-center justify-center relative transition-all hover:scale-105 hover:z-10`}
+      style={{
+        width: size,
+        height: size,
+        background: isSpecialSquare
+          ? `linear-gradient(135deg, hsl(var(--${square.type === 'bonus' ? 'board-bonus' : square.type === 'forward' ? 'board-forward' : 'board-back'})) 0%, hsl(var(--${square.type === 'bonus' ? 'board-bonus' : square.type === 'forward' ? 'board-forward' : 'board-back'})) 50%, hsl(var(--${square.type === 'bonus' ? 'board-bonus' : square.type === 'forward' ? 'board-forward' : 'board-back'}) / 0.8) 100%)`
+          : 'linear-gradient(135deg, hsl(var(--board-square)) 0%, hsl(var(--board-square) / 0.8) 100%)',
+        boxShadow: `
+          inset 2px 2px 4px rgba(255, 255, 255, 0.4),
+          inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+          0 4px 8px rgba(0, 0, 0, 0.3)
+        `,
+        borderRadius: '8px',
+        border: '1px solid rgba(0,0,0,0.1)'
+      }}
     >
-      {/* Número da Casa */}
-      <div className={`absolute -top-3 -left-3 w-8 h-8 ${
-        isStartOrEnd ? 'bg-accent' : 'bg-white'
-      } flex items-center justify-center text-xs font-bold ${
-        isStartOrEnd ? 'text-foreground' : 'text-primary'
-      } shadow-lg`}
-      style={{ border: '1px solid hsl(30 100% 50%)' }}>
+      {/* Número da Casa - Gravado na peça */}
+      <div className={`absolute top-1 left-1 w-6 h-6 flex items-center justify-center text-[10px] font-bold rounded-full shadow-inner ${isStartOrEnd ? 'bg-accent text-accent-foreground' : 'bg-black/10 text-foreground/70'
+        }`}>
         {square.id}
       </div>
-      
-      {/* Ícone Central */}
-      <div className="flex flex-col items-center justify-center">
+
+      {/* Ícone Central - Com efeito de relevo */}
+      <div className="flex flex-col items-center justify-center drop-shadow-md transform translate-y-1">
         {getIcon()}
         {square.label && (
-          <span className={`text-xs font-bold mt-1 text-center px-1 ${
-            isStartOrEnd ? 'text-white text-sm' : 'text-white'
-          }`}>
+          <span className={`text-[10px] font-bold mt-1 text-center px-1 leading-tight ${isStartOrEnd ? 'text-foreground' : 'text-foreground/80'
+            }`}>
             {square.label}
           </span>
         )}
       </div>
-      
-      {/* Efeito de Brilho para casas especiais */}
-      {isSpecialSquare && !isStartOrEnd && (
-        <div className="absolute inset-0 bg-white/10"></div>
+
+      {/* Textura de madeira/papel */}
+      {!isSpecialSquare && (
+        <div className="absolute inset-0 opacity-10 pointer-events-none rounded-lg"
+          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100\' height=\'100\' filter=\'url(%23noise)\' opacity=\'0.5\'/%3E%3C/svg%3E")' }}>
+        </div>
       )}
     </div>
   );

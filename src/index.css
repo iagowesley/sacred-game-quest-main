@@ -8,98 +8,122 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 30 100% 20%;
+    /* Royal Board Game Theme */
+    --background: 30 30% 95%;
+    /* Parchment light */
+    --foreground: 30 20% 20%;
+    /* Dark Ink */
 
-    --card: 0 0% 100%;
-    --card-foreground: 30 100% 20%;
+    --card: 35 30% 90%;
+    /* Parchment card */
+    --card-foreground: 30 20% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 30 100% 20%;
+    --popover: 35 30% 90%;
+    --popover-foreground: 30 20% 20%;
 
-    --primary: 30 100% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 35 90% 35%;
+    /* Royal Gold/Bronze */
+    --primary-foreground: 35 20% 95%;
 
-    --secondary: 30 20% 95%;
-    --secondary-foreground: 30 100% 20%;
+    --secondary: 15 30% 30%;
+    /* Leather Brown */
+    --secondary-foreground: 35 20% 95%;
 
-    --muted: 30 20% 95%;
-    --muted-foreground: 30 50% 40%;
+    --muted: 30 20% 85%;
+    --muted-foreground: 30 10% 40%;
 
-    --accent: 35 100% 60%;
-    --accent-foreground: 30 100% 20%;
+    --accent: 45 100% 50%;
+    /* Bright Gold */
+    --accent-foreground: 30 20% 20%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 40%;
+    /* Wax Seal Red */
     --destructive-foreground: 0 0% 98%;
 
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
+    --success: 140 60% 30%;
+    /* Felt Green */
+    --success-foreground: 0 0% 98%;
 
-    --board-square: 30 100% 70%;
-    --board-bonus: 142 76% 45%;
-    --board-forward: 35 100% 55%;
-    --board-back: 0 84% 60%;
+    --board-square: 35 40% 85%;
+    /* Tile color */
+    --board-bonus: 45 90% 45%;
+    /* Gold tile */
+    --board-forward: 140 50% 45%;
+    /* Green tile */
+    --board-back: 0 60% 55%;
+    /* Red tile */
 
-    --border: 30 32% 91%;
-    --input: 30 32% 91%;
-    --ring: 30 100% 50%;
+    --border: 30 20% 70%;
+    --input: 30 20% 90%;
+    --ring: 35 90% 35%;
 
-    --radius: 0rem;
-    
-    --shadow-card: 0 10px 40px -10px hsl(30 100% 50% / 0.3);
-    --shadow-glow: 0 0 30px hsl(30 100% 50% / 0.4);
-    --shadow-piece: 0 4px 12px hsl(0 0% 0% / 0.25);
-    --shadow-card-3d: 0 20px 60px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2);
-    --shadow-gold: 0 0 30px hsl(35 100% 60% / 0.5);
-    --card-texture: linear-gradient(135deg, transparent 25%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.03) 75%, rgba(255, 255, 255, 0.03));
+    --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5% 26%;
-    --sidebar-primary: 240 6% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 5% 96%;
-    --sidebar-accent-foreground: 240 6% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 262 83% 58%;
+    /* Realistic Shadows */
+    --shadow-card:
+      0 1px 1px hsl(0 0% 0% / 0.075),
+      0 2px 2px hsl(0 0% 0% / 0.075),
+      0 4px 4px hsl(0 0% 0% / 0.075),
+      0 8px 8px hsl(0 0% 0% / 0.075),
+      0 16px 16px hsl(0 0% 0% / 0.075);
+
+    --shadow-glow: 0 0 20px hsl(45 100% 50% / 0.5);
+
+    --shadow-piece:
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.15),
+      inset 0 -4px 4px -2px rgba(0, 0, 0, 0.3),
+      inset 0 4px 4px -2px rgba(255, 255, 255, 0.5);
+
+    --shadow-card-3d:
+      0 20px 25px -5px rgba(0, 0, 0, 0.2),
+      0 10px 10px -5px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+    --shadow-gold: 0 0 15px hsl(45 100% 50% / 0.6);
+
+    --wood-texture: repeating-linear-gradient(45deg,
+        hsl(25, 40%, 20%),
+        hsl(25, 40%, 20%) 10px,
+        hsl(25, 40%, 22%) 10px,
+        hsl(25, 40%, 22%) 20px);
+
+    --felt-texture: radial-gradient(circle at center,
+        hsl(140, 60%, 25%) 0%,
+        hsl(140, 60%, 20%) 100%);
   }
 
   .dark {
-    --background: 30 100% 10%;
-    --foreground: 0 0% 98%;
+    /* Dark Mode - Richer Wood/Night Theme */
+    --background: 25 40% 10%;
+    /* Dark Wood */
+    --foreground: 35 20% 90%;
 
-    --card: 30 100% 15%;
-    --card-foreground: 0 0% 98%;
+    --card: 25 30% 15%;
+    --card-foreground: 35 20% 90%;
 
-    --popover: 30 100% 15%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 25 30% 15%;
+    --popover-foreground: 35 20% 90%;
 
-    --primary: 30 100% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 45 90% 45%;
+    /* Gold */
+    --primary-foreground: 25 40% 10%;
 
-    --secondary: 30 50% 20%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 25 30% 25%;
+    --secondary-foreground: 35 20% 90%;
 
-    --muted: 30 50% 20%;
-    --muted-foreground: 30 20% 65%;
+    --muted: 25 30% 20%;
+    --muted-foreground: 35 10% 60%;
 
-    --accent: 35 100% 60%;
-    --accent-foreground: 30 100% 10%;
+    --accent: 45 100% 50%;
+    --accent-foreground: 25 40% 10%;
 
-    --destructive: 0 62% 30%;
+    --destructive: 0 70% 40%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 30 50% 20%;
-    --input: 30 50% 20%;
-    --ring: 30 100% 50%;
-
-    --sidebar-background: 30 100% 10%;
-    --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 30 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 50% 15%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 30 50% 15%;
-    --sidebar-ring: 30 100% 50%;
+    --border: 25 30% 25%;
+    --input: 25 30% 20%;
+    --ring: 45 90% 45%;
   }
 }
 
@@ -117,49 +141,93 @@ All colors MUST be HSL.
   .animate-bounce-piece {
     animation: bounce-piece 0.5s ease-in-out;
   }
-  
+
   @keyframes bounce-piece {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
   }
-  
+
   .animate-move-forward {
     animation: move-forward 0.6s ease-out;
   }
-  
+
   @keyframes move-forward {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3) rotate(10deg); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.3) rotate(10deg);
+    }
+
+    100% {
+      transform: scale(1);
+    }
   }
 
   @keyframes card-entrance {
-    0% { 
+    0% {
       transform: scale(0.5) rotateZ(-10deg);
       opacity: 0;
     }
-    60% { 
+
+    60% {
       transform: scale(1.05) rotateZ(2deg);
     }
-    100% { 
+
+    100% {
       transform: scale(1) rotateZ(0deg);
       opacity: 1;
     }
   }
 
   @keyframes dice-roll {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(90deg) scale(1.1); }
-    50% { transform: rotate(180deg) scale(0.9); }
-    75% { transform: rotate(270deg) scale(1.1); }
+
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+
+    25% {
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    50% {
+      transform: rotate(180deg) scale(0.9);
+    }
+
+    75% {
+      transform: rotate(270deg) scale(1.1);
+    }
   }
 
   @keyframes dice-roll-3d {
-    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-    25% { transform: rotateX(180deg) rotateY(90deg) rotateZ(45deg); }
-    50% { transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg); }
-    75% { transform: rotateX(540deg) rotateY(270deg) rotateZ(135deg); }
-    100% { transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg); }
+    0% {
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    25% {
+      transform: rotateX(180deg) rotateY(90deg) rotateZ(45deg);
+    }
+
+    50% {
+      transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg);
+    }
+
+    75% {
+      transform: rotateX(540deg) rotateY(270deg) rotateZ(135deg);
+    }
+
+    100% {
+      transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg);
+    }
   }
 
   .animate-card-entrance {
