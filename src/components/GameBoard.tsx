@@ -62,14 +62,15 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
     setIsRollingDice(true);
 
     let rolls = 0;
+    let lastValue = Math.floor(Math.random() * 6) + 1;
     const rollInterval = setInterval(() => {
-      setDiceValue(Math.floor(Math.random() * 6) + 1);
+      lastValue = Math.floor(Math.random() * 6) + 1;
+      setDiceValue(lastValue);
       rolls++;
 
       if (rolls >= 10) {
         clearInterval(rollInterval);
-        const finalValue = Math.floor(Math.random() * 6) + 1;
-        setDiceValue(finalValue);
+        // Não gera novo número — usa o último valor do intervalo para não mudar
         setIsRollingDice(false);
 
         setTimeout(() => {
