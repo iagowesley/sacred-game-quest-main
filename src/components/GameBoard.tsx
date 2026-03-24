@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { GameCard } from "./GameCard";
 import { BoardSquare } from "./BoardSquare";
 import { PlayerPiece } from "./PlayerPiece";
-import { Trophy, RotateCcw, Dices } from "lucide-react";
+import { Trophy, ArrowCounterClockwise, DiceFive, Crown } from "@phosphor-icons/react";
 import { Player, BoardSquare as BoardSquareType } from "@/types/game";
 import { themes } from "@/data/themes";
 import { toast } from "sonner";
@@ -321,27 +321,27 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
   };
 
   return (
-    <div className="min-h-screen p-4 bg-[hsl(var(--background))] flex flex-col items-center justify-center"
-      style={{ backgroundImage: 'var(--wood-texture)' }}>
+    <div className="min-h-screen p-4 flex flex-col items-center justify-center"
+      style={{ background: 'radial-gradient(ellipse at 60% 40%, hsl(270 30% 12%) 0%, hsl(270 20% 8%) 100%)' }}>
       <div className="max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6 bg-card/90 p-4 rounded-lg shadow-lg backdrop-blur-sm border border-primary/20">
+        <div className="flex justify-between items-center mb-4 bg-card/80 px-5 py-3 rounded-xl border border-border/50 backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary flex items-center justify-center shadow-[var(--shadow-glow)] rounded-full border-2 border-accent">
-              <Trophy className="w-6 h-6 text-primary-foreground" />
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center" style={{ boxShadow: 'var(--shadow-glow)' }}>
+              <Trophy size={20} weight="fill" className="text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-primary font-serif tracking-wide drop-shadow-sm">
-                Jogo Bíblico - A Jornada
+              <h1 className="text-xl font-bold text-gradient-gold tracking-wide">
+                A Jornada
               </h1>
               {!winner && (
-                <p className="text-sm text-muted-foreground font-medium">
+                <p className="text-xs text-muted-foreground">
                   Vez de: <span className="font-semibold text-foreground">{players[currentPlayer].name}</span>
                 </p>
               )}
               {winner && (
-                <p className="text-lg font-bold text-success animate-pulse">
-                  🎉 Vencedor: {winner.name}!
+                <p className="text-sm font-bold text-accent animate-pulse">
+                  Vencedor: {winner.name}!
                 </p>
               )}
             </div>
@@ -349,47 +349,60 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
           <Button
             variant="outline"
             onClick={onRestart}
-            className="border-primary/30 hover:bg-primary/10 hover:text-primary transition-colors"
+            className="border-border/50 hover:bg-primary/10 hover:text-primary hover:border-primary/40 gap-2 text-sm"
           >
-            <RotateCcw className="w-4 h-4 mr-2" />
+            <ArrowCounterClockwise size={15} />
             Novo jogo
           </Button>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           {/* Board */}
           <div className="lg:col-span-2">
-            <div className="p-8 bg-[#eecfa1] rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden border-[16px] border-[#5d4037]"
+            <div
+              className="p-6 rounded-2xl relative overflow-hidden"
               style={{
-                boxShadow: 'inset 0 0 100px rgba(0,0,0,0.3), 0 20px 60px rgba(0,0,0,0.5)',
-                backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.6\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100\' height=\'100\' filter=\'url(%23noise)\' opacity=\'0.15\'/%3E%3C/svg%3E")',
-                borderColor: '#5d4037'
-              }}>
+                background: 'hsl(270 25% 12%)',
+                border: '20px solid #1a0d2e',
+                boxShadow: 'inset 0 0 30px hsl(45 95% 52% / 0.08), 0 20px 60px rgba(0,0,0,0.6)',
+                backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E\")",
+              }}
+            >
+              {/* Borda interna dourada */}
+              <div className="absolute inset-0 border-2 border-accent/20 rounded-lg pointer-events-none m-1" />
 
-              {/* Moldura interna dourada */}
-              <div className="absolute inset-0 border-4 border-[#ffd700]/30 pointer-events-none rounded-lg m-1"></div>
+              {/* Cantoneiras decorativas */}
+              <div className="absolute top-3 left-3 text-accent/60 text-2xl pointer-events-none select-none leading-none">✦</div>
+              <div className="absolute top-3 right-3 text-accent/60 text-2xl pointer-events-none select-none leading-none">✦</div>
+              <div className="absolute bottom-3 left-3 text-accent/60 text-2xl pointer-events-none select-none leading-none">✦</div>
+              <div className="absolute bottom-3 right-3 text-accent/60 text-2xl pointer-events-none select-none leading-none">✦</div>
 
-              {/* Decorative Background Elements */}
-              <div className="absolute inset-0 opacity-10 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary blur-[100px]"></div>
+              {/* Versículo */}
+              <p className="text-[10px] italic text-accent/60 text-center mb-3 tracking-wide relative z-10">
+                "Lâmpada para os meus pés é tua palavra" — Salmos 119:105
+              </p>
+
+              {/* Ornamento superior */}
+              <div className="flex items-center gap-2 mb-3 px-8 relative z-10">
+                <div className="flex-1 border-t border-accent/15" />
+                <span className="text-accent/30 text-xs">◆</span>
+                <div className="flex-1 border-t border-accent/15" />
               </div>
 
               {/* Caminho do Jogo - Layout Serpentine */}
-              <div className="relative">
+              <div className="relative z-10">
                 {/* Linha 1: 0-5 (esquerda para direita) */}
                 <div className="flex gap-2 mb-12">
                   {board.slice(0, 6).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
                       <BoardSquare square={square} size={70} />
-                      {/* Connector Right */}
                       {i < 5 && (
-                        <div className="absolute top-1/2 -right-4 w-6 h-1 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute top-1/2 -right-4 w-6 h-1 z-0"
+                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
-                      {/* Connector Down (Last Item) */}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0"
+                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -414,15 +427,13 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                   {board.slice(6, 12).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
                       <BoardSquare square={square} size={70} />
-                      {/* Connector Left (visually right because of flex-reverse) */}
                       {i < 5 && (
-                        <div className="absolute top-1/2 -left-4 w-6 h-1 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute top-1/2 -left-4 w-6 h-1 z-0"
+                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
-                      {/* Connector Down (Last Item - visually first) */}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0"
+                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -447,15 +458,13 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                   {board.slice(12, 18).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
                       <BoardSquare square={square} size={70} />
-                      {/* Connector Right */}
                       {i < 5 && (
-                        <div className="absolute top-1/2 -right-4 w-6 h-1 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute top-1/2 -right-4 w-6 h-1 z-0"
+                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
-                      {/* Connector Down */}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0"
+                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -480,15 +489,13 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                   {board.slice(18, 24).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
                       <BoardSquare square={square} size={70} />
-                      {/* Connector Left */}
                       {i < 5 && (
-                        <div className="absolute top-1/2 -left-4 w-6 h-1 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute top-1/2 -left-4 w-6 h-1 z-0"
+                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
-                      {/* Connector Down */}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0"
+                          style={{ transform: 'translateX(-50%)', borderLeft: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -509,14 +516,13 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                 </div>
 
                 {/* Linha 5: 24-30 (esquerda para direita) */}
-                <div className="flex gap-2 mb-10">
+                <div className="flex gap-2 mb-4">
                   {board.slice(24, 31).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
                       <BoardSquare square={square} size={70} />
-                      {/* Connector Right */}
                       {i < 6 && (
-                        <div className="absolute top-1/2 -right-4 w-6 h-1 bg-[#5d4037] opacity-60 z-0"
-                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed #5d4037', background: 'none' }} />
+                        <div className="absolute top-1/2 -right-4 w-6 h-1 z-0"
+                          style={{ transform: 'translateY(-50%)', borderTop: '2px dashed hsl(45 95% 52% / 0.4)', background: 'none' }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -537,45 +543,60 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                 </div>
               </div>
 
+              {/* Ornamento inferior */}
+              <div className="flex items-center gap-2 mt-3 px-8 relative z-10">
+                <div className="flex-1 border-t border-accent/15" />
+                <span className="text-accent/30 text-xs">◆</span>
+                <div className="flex-1 border-t border-accent/15" />
+              </div>
             </div>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Players */}
-            <Card className="p-4 bg-card shadow-[var(--shadow-card)]">
-              <h3 className="font-bold mb-5 flex items-center gap-2">
-                Jogadores
-              </h3>
-              <div className="space-y-3">
-                {players.map((player, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={`p-3 transition-all ${index === currentPlayer && !winner
-                        ? 'bg-primary/10 border-2 border-primary shadow-sm'
-                        : 'bg-muted/30'
-                        }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <PlayerPiece color={player.color} name={player.name} size={36} avatar={player.avatar} />
-                        <div className="flex-1">
-                          <div className="font-medium text-sm">{player.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            Casa {player.position}/{TOTAL_SQUARES}
-                          </div>
+            <Card className="p-4 bg-card border border-border/50" style={{ boxShadow: 'var(--shadow-card)' }}>
+              <h3 className="font-bold mb-4 text-sm text-muted-foreground uppercase tracking-wider">Jogadores</h3>
+              <div className="space-y-2">
+                {players.map((player, index) => (
+                  <div
+                    key={index}
+                    className={`p-3 rounded-lg transition-all ${
+                      index === currentPlayer && !winner
+                        ? 'bg-primary/15 border-2 border-accent'
+                        : 'bg-muted/30 border border-border/30'
+                    }`}
+                    style={index === currentPlayer && !winner ? { boxShadow: 'var(--shadow-gold)' } : undefined}
+                  >
+                    <div className="flex items-center gap-3">
+                      <PlayerPiece color={player.color} name={player.name} size={36} avatar={player.avatar} />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          {index === currentPlayer && !winner && (
+                            <Crown size={13} weight="fill" className="text-accent flex-shrink-0" />
+                          )}
+                          <div className="font-medium text-sm truncate">{player.name}</div>
+                        </div>
+                        <div className="text-xs text-muted-foreground mb-1">
+                          Casa {player.position}/{TOTAL_SQUARES}
+                        </div>
+                        <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-accent/60 rounded-full transition-all duration-500"
+                            style={{ width: `${(player.position / TOTAL_SQUARES) * 100}%` }}
+                          />
                         </div>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </Card>
 
             {/* Game Actions */}
-            <Card className="p-4 bg-card shadow-[var(--shadow-card)]">
+            <Card className="p-4 bg-card border border-border/50" style={{ boxShadow: 'var(--shadow-card)' }}>
               {!winner && gamePhase === 'roll' && !showCard ? (
-                <div className="space-y-6">
+                <div className="space-y-5">
                   {diceValue && (
                     <div className="flex flex-col items-center gap-3">
                       <Dice value={diceValue} isRolling={isRollingDice} />
@@ -587,21 +608,18 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                   <Button
                     onClick={rollDice}
                     disabled={isRollingDice || (diceValue !== null && !showCard)}
-                    className="w-full bg-primary hover:bg-primary/90 hover:shadow-[var(--shadow-glow)] transition-all duration-300 text-lg py-6"
+                    className="w-full bg-primary hover:bg-primary/90 transition-all duration-300 text-base py-6 gap-2"
+                    style={{ boxShadow: isRollingDice ? undefined : 'var(--shadow-glow)' }}
                   >
-                    <Dices className="w-5 h-5 mr-2" />
+                    <DiceFive size={20} />
                     {isRollingDice ? 'Rolando dado...' : diceValue && !showCard ? 'Aguarde...' : 'Jogar dado'}
                   </Button>
                 </div>
               ) : winner ? (
-                <div className="text-center py-4">
-                  <div className="text-6xl mb-4">🏆</div>
-                  <h2 className="text-2xl font-bold text-primary mb-2">
-                    Parabéns!
-                  </h2>
-                  <p className="text-muted-foreground">
-                    {winner.name} venceu o jogo!
-                  </p>
+                <div className="text-center py-6">
+                  <Trophy size={64} weight="fill" className="text-accent mx-auto mb-3 animate-bounce" />
+                  <h2 className="text-2xl font-bold text-accent mb-1">Parabéns!</h2>
+                  <p className="text-muted-foreground">{winner.name} venceu a jornada!</p>
                 </div>
               ) : (
                 showCard && currentCard && (
