@@ -11,7 +11,7 @@ export interface Player {
   position: number;
   color: string;
   difficultyLevel: number; // 1 = fácil, 2 = médio, 3 = difícil
-  avatar?: string;
+  emoji?: string;
   theme?: string; // tema sorteado para o jogador
   correctAnswers?: number; // contador de respostas corretas
   cardRotation?: number; // 0 = pergunta, 1 = desafio bíblico, 2 = desafio IASD
