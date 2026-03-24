@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Plus, X } from "lucide-react";
+import { UserPlus, X, Play } from "@phosphor-icons/react";
 
 const AVATARS = [
   { id: 'dog', src: '/avatars/dog.png', name: 'Cachorro' },
@@ -68,42 +68,45 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[hsl(var(--background))]">
-      <Card className="w-full max-w-2xl p-8 shadow-[var(--shadow-card)] bg-card">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}
+    >
+      <Card className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
+        {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-30 h-30 mb-4 shadow-[var(--shadow-glow)] p-4">
-            <img src="/biblia34.png" alt="Bíblia" className="w-full h-full object-contain" />
-          </div>
-          <h1 className="text-4xl font-bold mb-2 text-primary">
-            Jogo bíblico
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Perguntas e desafios sobre a bíblia e a igreja
-          </p>
+          <img
+            src="/biblia34.png"
+            alt="A Jornada"
+            className="w-20 h-20 object-contain mx-auto mb-4"
+            style={{ filter: 'drop-shadow(0 0 12px hsl(45 95% 52% / 0.4))' }}
+          />
+          <h1 className="text-3xl font-bold text-gradient-gold mb-1">A Jornada</h1>
+          <p className="text-muted-foreground">Perguntas e desafios sobre a bíblia e a igreja</p>
         </div>
 
-        <div className="space-y-4 mb-6">
-          <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
+        <div className="space-y-3 mb-6">
+          <h2 className="text-base font-semibold text-foreground">
             Jogadores ({players.length}/8)
           </h2>
-          
+
           {players.map((player, index) => (
-            <div key={index} className="space-y-2 p-4 bg-muted/30 border border-border">
+            <div key={index} className="space-y-2 p-4 bg-muted/30 border border-border/40 rounded-xl">
               <div className="flex gap-2">
                 <Input
                   placeholder={`Jogador ${index + 1}`}
                   value={player.name}
                   onChange={(e) => updatePlayerName(index, e.target.value)}
-                  className="flex-1 bg-background/50 border-primary/20 focus:border-primary transition-colors"
+                  className="flex-1 bg-input border-border focus:border-accent text-foreground placeholder:text-muted-foreground"
                 />
                 {players.length > 1 && (
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => removePlayer(index)}
-                    className="border-destructive/20 hover:bg-destructive/10 hover:border-destructive"
+                    className="border-destructive/30 hover:bg-destructive/10 hover:border-destructive"
                   >
-                    <X className="w-4 h-4 text-destructive" />
+                    <X size={16} className="text-destructive" />
                   </Button>
                 )}
               </div>
@@ -113,14 +116,15 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
                     key={avatar.id}
                     type="button"
                     onClick={() => updatePlayerAvatar(index, avatar.src)}
-                    className={`w-12 h-12 border-2 transition-all hover:scale-110 ${
-                      player.avatar === avatar.src 
-                        ? 'border-primary shadow-[var(--shadow-glow)]' 
-                        : 'border-border hover:border-primary/50'
+                    className={`w-11 h-11 rounded-lg overflow-hidden border-2 transition-all hover:scale-110 ${
+                      player.avatar === avatar.src
+                        ? 'border-accent'
+                        : 'border-border/40 hover:border-primary/50'
                     }`}
+                    style={player.avatar === avatar.src ? { boxShadow: 'var(--shadow-gold)' } : undefined}
                     title={avatar.name}
                   >
-                    <img src={avatar.src} alt={avatar.name} className="w-full h-full" />
+                    <img src={avatar.src} alt={avatar.name} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -131,22 +135,22 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
             <Button
               variant="outline"
               onClick={addPlayer}
-              className="w-full border-primary/30 hover:bg-primary/10 hover:border-primary transition-all"
+              className="w-full border-dashed border-primary/30 hover:bg-primary/10 hover:border-primary gap-2"
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <UserPlus size={16} />
               Adicionar jogador
             </Button>
           )}
 
-          {error && (
-            <p className="text-destructive text-sm text-center">{error}</p>
-          )}
+          {error && <p className="text-destructive text-sm text-center">{error}</p>}
         </div>
 
         <Button
           onClick={handleStartGame}
-          className="w-full bg-primary hover:bg-primary/90 hover:shadow-[var(--shadow-glow)] transition-all duration-300 text-lg py-6"
+          className="w-full bg-primary hover:bg-primary/90 text-lg py-6 gap-2 transition-all duration-300"
+          style={{ boxShadow: 'var(--shadow-glow)' }}
         >
+          <Play size={20} weight="fill" />
           Iniciar jogo
         </Button>
       </Card>
