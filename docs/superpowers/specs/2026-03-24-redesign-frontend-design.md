@@ -20,6 +20,8 @@ Modernizar completamente o frontend do jogo de tabuleiro cristão "A Jornada", m
 
 ## Dependências a instalar
 
+**Este passo deve ser executado ANTES de qualquer modificação nos componentes:**
+
 ```bash
 npm install @phosphor-icons/react
 ```
@@ -27,6 +29,18 @@ npm install @phosphor-icons/react
 A fonte Inter será importada via `@import` no `index.css` do Google Fonts.
 
 > `lucide-react` permanece no `package.json` pois é dependência do shadcn/ui internamente, mas **nenhum componente do jogo** deve importá-la diretamente após o redesign.
+
+### Sintaxe de uso dos ícones Phosphor
+
+```tsx
+import { WifiHigh, UsersThree, Trophy } from '@phosphor-icons/react';
+
+// Peso Regular (padrão — não precisa especificar weight)
+<WifiHigh size={24} />
+<UsersThree size={24} />
+```
+
+O peso padrão do Phosphor já é Regular, portanto não é necessário passar `weight="regular"` explicitamente.
 
 ---
 
@@ -41,6 +55,10 @@ body {
   font-family: 'Inter', sans-serif;
 }
 ```
+
+### Importante: substituição total do tema
+
+**Substituir TODOS os valores de `:root` no `index.css`.** O tema atual é claro (parchment/marrom) e será completamente trocado pelo tema escuro roxo+dourado abaixo. Não há modo claro — o jogo usa apenas este tema escuro. O bloco `.dark` existente pode ser removido ou mantido igual ao `:root`.
 
 ### Paleta de Cores (HSL)
 
@@ -83,16 +101,18 @@ body {
 - **Título:** "A Jornada" em `text-5xl font-bold` com gradiente de texto roxo→dourado via `bg-clip-text`
 - **Subtítulo:** *"Uma aventura bíblica"* em itálico, `text-muted-foreground`
 - **Botões (parte inferior):**
-  - "Jogar Online": Phosphor `WifiHigh` + texto, background roxo primário, hover com borda dourada
-  - "Jogar Local": Phosphor `UsersThree` + texto, variante outline com borda roxa
+  - "Jogar Online": Phosphor `WifiHigh` (substitui lucide `Wifi`) + texto, background roxo primário, hover com borda dourada
+  - "Jogar Local": Phosphor `UsersThree` (substitui lucide `WifiOff` — ícone mudado intencionalmente para representar jogadores locais) + texto, variante outline com borda roxa
 
 ### Lobby (`src/components/Lobby.tsx`)
 
-- Mesmo fundo gradiente escuro
-- Card central com `border border-accent/30`, cantoneiras douradas CSS (pseudo-elementos)
+**Redesign completo** — remover todas as cores hardcoded existentes (`#f5e6d3`, `#5d4037`, `#deb887`, etc.) e aplicar o novo tema escuro.
+
+- Mesmo fundo gradiente escuro do menu
+- Card central com `bg-card border border-accent/30 rounded-2xl p-8`, cantoneiras douradas com `<div>` absolutos nos 4 cantos: `absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-accent`
 - Título com Phosphor `BookOpen` decorativo no header
-- Inputs: `bg-input border-border focus:border-accent` — borda dourada no focus
-- Botão principal: roxo sólido; botão voltar: ghost
+- Inputs: `bg-input border border-border focus:border-accent text-foreground placeholder:text-muted-foreground`
+- Botão principal: `bg-primary text-primary-foreground hover:bg-primary/90`; botão voltar: `variant="ghost" text-muted-foreground`
 - Modo 'menu' do Lobby: dois botões grandes — "Criar Sala" (Phosphor `Plus`) e "Entrar em Sala" (Phosphor `SignIn`)
 
 ### PlayerSetup (`src/components/PlayerSetup.tsx`)
@@ -119,21 +139,25 @@ body {
 
 - **Borda externa:** `border-[20px]` com cor `#1a0d2e` (roxo quase preto)
 - **Borda interna dourada:** `ring-4 ring-accent/40` com `box-shadow: inset 0 0 30px hsl(45 95% 52% / 0.15)`
-- **Cantoneiras decorativas:** 4 `<div>` absolutos nos cantos com SVG inline de ornamento (cruz simples + folha de oliveira) em cor `hsl(45 95% 52%)` (dourado)
-- **Fundo do tabuleiro:** `bg-[hsl(270_25%_12%)]` (feltro roxo escuro) com `background-image` de textura noise SVG sutil
-- **Versículo bíblico:** no topo do tabuleiro, dentro da moldura, em `text-xs italic text-accent/70`: *"Lâmpada para os meus pés é tua palavra" — Salmos 119:105*
-- **Ornamentos laterais:** linha `border-t border-accent/20` com losango SVG centralizado em cada lado
+- **Cantoneiras decorativas:** 4 `<div>` absolutos nos cantos com ornamento em `text-accent text-2xl` usando o caractere `✦` (U+2726), posicionados com `absolute top-2 left-2`, `top-2 right-2`, `bottom-2 left-2`, `bottom-2 right-2`
+- **Fundo do tabuleiro:** `bg-[hsl(270_25%_12%)]` (feltro roxo escuro) com textura noise SVG sutil via inline style:
+  ```
+  backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E\")"
+  ```
+- **Versículo bíblico (hardcoded):** no topo do tabuleiro, dentro da moldura, em `text-xs italic text-accent/70 text-center mb-3`: `"Lâmpada para os meus pés é tua palavra — Salmos 119:105"`
+- **Ornamentos laterais:** linha simples `border-t border-accent/20` com um `◆` (`&#9670;`) centralizado em `text-accent/40 text-xs`
 
 ### Casas (`BoardSquare.tsx`)
 
-- Tamanho: `size` default aumentado para `76px`
-- **Efeito 3D multicamada:**
+- Tamanho: alterar o valor default do parâmetro `size` de `60` para `76` em `BoardSquare.tsx`
+- **Efeito 3D multicamada via `style={{ boxShadow: '...' }}` (inline style, não Tailwind):**
   ```
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.15),   /* face superior iluminada */
-    inset 0 -2px 4px rgba(0,0,0,0.4),          /* face inferior sombreada */
-    0 4px 0 rgba(0,0,0,0.5),                    /* borda lateral (profundidade) */
-    0 6px 12px rgba(0,0,0,0.4)                  /* sombra de queda */
+  boxShadow: `
+    inset 0 2px 4px rgba(255,255,255,0.15),
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    0 4px 0 rgba(0,0,0,0.5),
+    0 6px 12px rgba(0,0,0,0.4)
+  `
   ```
 - **Normal:** background `hsl(var(--board-square))` — roxo escuro elevado
 - **Bônus:** background dourado, Phosphor `Star` (Regular), glow `--shadow-gold`
