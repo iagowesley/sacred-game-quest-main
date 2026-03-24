@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
-  BookOpenText,
-  Lightning,
   CheckCircle,
   XCircle,
   CheckFat,
@@ -14,9 +12,10 @@ interface GameCardProps {
   card: any;
   onAnswer: (index: number) => void;
   onChallengeComplete: (completed: boolean) => void;
+  onClose: () => void;
 }
 
-export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps) => {
+export const GameCard = ({ card, onAnswer, onChallengeComplete, onClose }: GameCardProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
 
@@ -34,15 +33,21 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps)
     const isCorrect = selectedAnswer === card.correct;
 
     return (
-      <Dialog open={true}>
+      <Dialog open={true} onOpenChange={(open) => { if (!open && !showFeedback) onClose(); }}>
         <DialogContent className="max-w-2xl p-0 overflow-hidden border border-primary/30 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
           {/* Header */}
-          <div className="relative h-28 overflow-hidden bg-gradient-to-br from-primary to-primary/70 flex items-end p-5">
-            <BookOpenText size={80} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
+          <div className="relative h-24 overflow-hidden bg-primary flex items-end p-5">
             <div className="relative z-10">
               <h3 className="text-xl font-bold text-white">Pergunta Bíblica</h3>
               <p className="text-sm text-white/75">Responda corretamente para avançar</p>
             </div>
+            <button
+              onClick={() => { if (!showFeedback) onClose(); }}
+              className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              aria-label="Fechar"
+            >
+              <X size={16} className="text-white" />
+            </button>
           </div>
 
           {/* Body */}
@@ -73,7 +78,7 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps)
                         ? 'border-green-500 bg-green-500/10 text-foreground'
                         : showWrong
                         ? 'border-red-500 bg-red-500/10 text-foreground'
-                        : 'border-border hover:border-accent hover:bg-primary/10'
+                        : 'border-border hover:border-primary hover:bg-primary/10'
                     }`}
                   >
                     <span className={`w-7 h-7 flex items-center justify-center flex-shrink-0 rounded-full text-xs font-bold ${
@@ -100,21 +105,27 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps)
   }
 
   return (
-    <Dialog open={true}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden border border-accent/30 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
+    <Dialog open={true} onOpenChange={(open) => { if (!open) onChallengeComplete(false); }}>
+      <DialogContent className="max-w-2xl p-0 overflow-hidden border border-border/40 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
         {/* Header */}
-        <div className="relative h-28 overflow-hidden bg-gradient-to-br from-accent to-accent/70 flex items-end p-5">
-          <Lightning size={80} className="absolute right-4 top-1/2 -translate-y-1/2 text-black/10" weight="fill" />
+        <div className="relative h-24 overflow-hidden bg-muted flex items-end p-5">
           <div className="relative z-10">
-            <h3 className="text-xl font-bold text-accent-foreground">Prenda!</h3>
-            <p className="text-sm text-accent-foreground/75">Complete o desafio para avançar</p>
+            <h3 className="text-xl font-bold text-foreground">Prenda!</h3>
+            <p className="text-sm text-muted-foreground">Complete o desafio para avançar</p>
           </div>
+          <button
+            onClick={() => onChallengeComplete(false)}
+            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-foreground/10 hover:bg-foreground/20 flex items-center justify-center transition-colors"
+            aria-label="Fechar"
+          >
+            <X size={16} className="text-foreground/70" />
+          </button>
         </div>
 
         {/* Body */}
         <div className="p-6 space-y-5">
-          <div className="p-5 bg-muted/50 border border-accent/20 rounded-xl relative">
-            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
+          <div className="p-5 bg-muted/50 border border-border/30 rounded-xl relative">
+            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
               Desafio
             </span>
             <p className="text-base font-semibold text-foreground leading-relaxed">
@@ -133,8 +144,7 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps)
             </Button>
             <Button
               onClick={() => onChallengeComplete(true)}
-              className="h-12 text-sm bg-accent text-accent-foreground hover:bg-accent/90 gap-2"
-              style={{ boxShadow: 'var(--shadow-gold)' }}
+              className="h-12 text-sm bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
             >
               <CheckFat size={16} weight="fill" />
               Completou!
@@ -143,7 +153,7 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps)
         </div>
 
         {/* Footer */}
-        <div className="h-2.5 bg-accent rounded-b" />
+        <div className="h-2.5 bg-primary rounded-b" />
       </DialogContent>
     </Dialog>
   );
