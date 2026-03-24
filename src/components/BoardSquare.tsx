@@ -1,82 +1,81 @@
 import { BoardSquare as BoardSquareType } from "@/types/game";
-import { Gift, Star, ArrowUp, ArrowDown, Circle } from "lucide-react";
+import { Star, ArrowUp, ArrowDown, FlagBanner, Trophy } from "@phosphor-icons/react";
 
 interface BoardSquareProps {
   square: BoardSquareType;
   size?: number;
 }
 
-export const BoardSquare = ({ square, size = 60 }: BoardSquareProps) => {
-  const getSquareColor = () => {
+export const BoardSquare = ({ square, size = 76 }: BoardSquareProps) => {
+  const isStartOrEnd = square.label === 'Início' || square.label === 'Fim';
+
+  const getBg = () => {
     switch (square.type) {
-      case 'bonus':
-        return 'bg-[hsl(var(--board-bonus))] shadow-[0_0_20px_hsl(var(--board-bonus)/0.4)]';
-      case 'forward':
-        return 'bg-[hsl(var(--board-forward))] shadow-[0_0_20px_hsl(var(--board-forward)/0.4)]';
-      case 'back':
-        return 'bg-[hsl(var(--board-back))] shadow-[0_0_20px_hsl(var(--board-back)/0.4)]';
-      default:
-        return 'bg-[hsl(var(--board-square))]';
+      case 'bonus':   return 'hsl(var(--board-bonus))';
+      case 'forward': return 'hsl(var(--board-forward))';
+      case 'back':    return 'hsl(var(--board-back))';
+      default:        return isStartOrEnd ? 'hsl(var(--board-bonus))' : 'hsl(var(--board-square))';
     }
   };
 
   const getIcon = () => {
+    if (square.id === 0)  return <FlagBanner size={22} weight="fill" className="text-white drop-shadow" />;
+    if (square.id === 30) return <Trophy size={22} weight="fill" className="text-white drop-shadow" />;
     switch (square.type) {
-      case 'bonus':
-        return <Star className="w-6 h-6 text-white fill-white" />;
-      case 'forward':
-        return <ArrowUp className="w-6 h-6 text-white" />;
-      case 'back':
-        return <ArrowDown className="w-6 h-6 text-white" />;
-      default:
-        return null;
+      case 'bonus':   return <Star size={20} weight="fill" className="text-white drop-shadow" />;
+      case 'forward': return <ArrowUp size={20} weight="bold" className="text-white drop-shadow" />;
+      case 'back':    return <ArrowDown size={20} weight="bold" className="text-white drop-shadow" />;
+      default:        return null;
     }
   };
 
-  const isSpecialSquare = square.type !== 'normal';
-  const isStartOrEnd = square.label === 'Início' || square.label === 'Fim';
+  const glowColor = () => {
+    switch (square.type) {
+      case 'bonus':   return 'var(--shadow-gold)';
+      case 'forward': return '0 0 12px hsl(145 55% 38% / 0.5)';
+      case 'back':    return '0 0 12px hsl(0 65% 48% / 0.5)';
+      default:        return isStartOrEnd ? 'var(--shadow-gold)' : undefined;
+    }
+  };
 
   return (
     <div
-      className={`flex flex-col items-center justify-center relative transition-all hover:scale-105 hover:z-10`}
+      className="flex flex-col items-center justify-center relative transition-transform hover:scale-105 hover:z-10"
       style={{
         width: size,
         height: size,
-        background: isSpecialSquare
-          ? `linear-gradient(135deg, hsl(var(--${square.type === 'bonus' ? 'board-bonus' : square.type === 'forward' ? 'board-forward' : 'board-back'})) 0%, hsl(var(--${square.type === 'bonus' ? 'board-bonus' : square.type === 'forward' ? 'board-forward' : 'board-back'})) 50%, hsl(var(--${square.type === 'bonus' ? 'board-bonus' : square.type === 'forward' ? 'board-forward' : 'board-back'}) / 0.8) 100%)`
-          : 'linear-gradient(135deg, hsl(var(--board-square)) 0%, hsl(var(--board-square) / 0.8) 100%)',
-        boxShadow: `
-          inset 2px 2px 4px rgba(255, 255, 255, 0.4),
-          inset -2px -2px 4px rgba(0, 0, 0, 0.2),
-          0 4px 8px rgba(0, 0, 0, 0.3)
-        `,
-        borderRadius: '8px',
-        border: '1px solid rgba(0,0,0,0.1)'
+        background: getBg(),
+        borderRadius: '10px',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: [
+          'inset 0 2px 4px rgba(255,255,255,0.15)',
+          'inset 0 -2px 4px rgba(0,0,0,0.4)',
+          '0 4px 0 rgba(0,0,0,0.5)',
+          '0 6px 12px rgba(0,0,0,0.4)',
+          glowColor(),
+        ].filter(Boolean).join(', '),
       }}
     >
-      {/* Número da Casa - Gravado na peça */}
-      <div className={`absolute top-1 left-1 w-6 h-6 flex items-center justify-center text-[10px] font-bold rounded-full shadow-inner ${isStartOrEnd ? 'bg-accent text-accent-foreground' : 'bg-black/10 text-foreground/70'
-        }`}>
+      {/* Número da casa */}
+      <div className="absolute top-1 left-1 w-5 h-5 flex items-center justify-center text-[9px] font-bold rounded-full bg-black/30 text-white/70">
         {square.id}
       </div>
 
-      {/* Ícone Central - Com efeito de relevo */}
-      <div className="flex flex-col items-center justify-center drop-shadow-md transform translate-y-1">
+      {/* Ícone central */}
+      <div className="flex flex-col items-center justify-center">
         {getIcon()}
         {square.label && (
-          <span className={`text-[10px] font-bold mt-1 text-center px-1 leading-tight ${isStartOrEnd ? 'text-foreground' : 'text-foreground/80'
-            }`}>
+          <span className="text-[9px] font-bold mt-0.5 text-white/90 text-center px-1 leading-tight">
             {square.label}
           </span>
         )}
       </div>
 
-      {/* Textura de madeira/papel */}
-      {!isSpecialSquare && (
-        <div className="absolute inset-0 opacity-10 pointer-events-none rounded-lg"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100\' height=\'100\' filter=\'url(%23noise)\' opacity=\'0.5\'/%3E%3C/svg%3E")' }}>
-        </div>
-      )}
+      {/* Reflexo superior */}
+      <div
+        className="absolute inset-0 pointer-events-none rounded-[10px]"
+        style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%)' }}
+      />
     </div>
   );
 };
