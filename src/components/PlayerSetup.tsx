@@ -5,34 +5,34 @@ import { Card } from "@/components/ui/card";
 import { UserPlus, X, Play } from "@phosphor-icons/react";
 
 const AVATARS = [
-  { id: 'dog', src: '/avatars/dog.png', name: 'Cachorro' },
-  { id: 'cat', src: '/avatars/cat.png', name: 'Gato' },
-  { id: 'fox', src: '/avatars/fox.png', name: 'Raposa' },
-  { id: 'bear', src: '/avatars/bear.png', name: 'Urso' },
-  { id: 'pig', src: '/avatars/pig.png', name: 'Porco' },
-  { id: 'cow', src: '/avatars/cow.png', name: 'Vaca' },
-  { id: 'lion', src: '/avatars/lion.png', name: 'Leão' },
-  { id: 'koala', src: '/avatars/koala.png', name: 'Coala' },
+  { id: 'dog',   emoji: '🐶', name: 'Cachorro' },
+  { id: 'cat',   emoji: '🐱', name: 'Gato'     },
+  { id: 'fox',   emoji: '🦊', name: 'Raposa'   },
+  { id: 'bear',  emoji: '🐻', name: 'Urso'     },
+  { id: 'pig',   emoji: '🐷', name: 'Porco'    },
+  { id: 'cow',   emoji: '🐮', name: 'Vaca'     },
+  { id: 'lion',  emoji: '🦁', name: 'Leão'     },
+  { id: 'koala', emoji: '🐨', name: 'Coala'    },
 ];
 
 interface PlayerSetupProps {
-  onStartGame: (players: Array<{ name: string; avatar: string }>) => void;
+  onStartGame: (players: Array<{ name: string; emoji: string }>) => void;
 }
 
 interface PlayerData {
   name: string;
-  avatar: string;
+  emoji: string;
 }
 
 export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
-  const [players, setPlayers] = useState<PlayerData[]>([{ name: "", avatar: AVATARS[0].src }]);
+  const [players, setPlayers] = useState<PlayerData[]>([{ name: "", emoji: AVATARS[0].emoji }]);
   const [error, setError] = useState("");
 
   const addPlayer = () => {
     if (players.length < 8) {
-      const usedAvatars = players.map(p => p.avatar);
-      const availableAvatar = AVATARS.find(a => !usedAvatars.includes(a.src))?.src || AVATARS[0].src;
-      setPlayers([...players, { name: "", avatar: availableAvatar }]);
+      const usedEmojis = players.map(p => p.emoji);
+      const availableEmoji = AVATARS.find(a => !usedEmojis.includes(a.emoji))?.emoji || AVATARS[0].emoji;
+      setPlayers([...players, { name: "", emoji: availableEmoji }]);
       setError("");
     }
   };
@@ -51,9 +51,9 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
     setError("");
   };
 
-  const updatePlayerAvatar = (index: number, avatar: string) => {
+  const updatePlayerEmoji = (index: number, emoji: string) => {
     const newPlayers = [...players];
-    newPlayers[index].avatar = avatar;
+    newPlayers[index].emoji = emoji;
     setPlayers(newPlayers);
     setError("");
   };
@@ -68,10 +68,7 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}
-    >
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
         {/* Header */}
         <div className="text-center mb-8">
@@ -79,9 +76,8 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
             src="/biblia34.png"
             alt="A Jornada"
             className="w-20 h-20 object-contain mx-auto mb-4"
-            style={{ filter: 'drop-shadow(0 0 12px hsl(45 95% 52% / 0.4))' }}
           />
-          <h1 className="text-3xl font-bold text-gradient-gold mb-1">A Jornada</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-1">A Jornada</h1>
           <p className="text-muted-foreground">Perguntas e desafios sobre a bíblia e a igreja</p>
         </div>
 
@@ -97,7 +93,7 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
                   placeholder={`Jogador ${index + 1}`}
                   value={player.name}
                   onChange={(e) => updatePlayerName(index, e.target.value)}
-                  className="flex-1 bg-input border-border focus:border-accent text-foreground placeholder:text-muted-foreground"
+                  className="flex-1 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground"
                 />
                 {players.length > 1 && (
                   <Button
@@ -115,16 +111,15 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
                   <button
                     key={avatar.id}
                     type="button"
-                    onClick={() => updatePlayerAvatar(index, avatar.src)}
-                    className={`w-11 h-11 rounded-lg overflow-hidden border-2 transition-all hover:scale-110 ${
-                      player.avatar === avatar.src
-                        ? 'border-accent'
-                        : 'border-border/40 hover:border-primary/50'
+                    onClick={() => updatePlayerEmoji(index, avatar.emoji)}
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl transition-all hover:scale-110 border-2 ${
+                      player.emoji === avatar.emoji
+                        ? 'border-primary bg-primary/15'
+                        : 'border-border/40 hover:border-primary/50 bg-muted/30'
                     }`}
-                    style={player.avatar === avatar.src ? { boxShadow: 'var(--shadow-gold)' } : undefined}
                     title={avatar.name}
                   >
-                    <img src={avatar.src} alt={avatar.name} className="w-full h-full object-cover" />
+                    {avatar.emoji}
                   </button>
                 ))}
               </div>
@@ -148,7 +143,6 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
         <Button
           onClick={handleStartGame}
           className="w-full bg-primary hover:bg-primary/90 text-lg py-6 gap-2 transition-all duration-300"
-          style={{ boxShadow: 'var(--shadow-glow)' }}
         >
           <Play size={20} weight="fill" />
           Iniciar jogo
