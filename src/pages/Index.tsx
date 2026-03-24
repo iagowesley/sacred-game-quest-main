@@ -5,7 +5,7 @@ import { Lobby } from "@/components/Lobby";
 import { WaitingRoom } from "@/components/WaitingRoom";
 import { useGameRoom } from "@/hooks/useGameRoom";
 import { Button } from "@/components/ui/button";
-import { Wifi, WifiOff } from "lucide-react";
+import { WifiHigh, UsersThree } from "@phosphor-icons/react";
 
 const Index = () => {
   const [mode, setMode] = useState<'menu' | 'local' | 'online'>('menu');
@@ -33,33 +33,61 @@ const Index = () => {
     setPlayerName(name);
   };
 
-  // Menu inicial
   if (mode === 'menu') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-[hsl(var(--background))]">
-        <div className="text-center space-y-8 max-w-md">
-          <h1 className="text-4xl font-bold text-primary">
-            Jogo bíblico
-          </h1>
-          
-          <div className="space-y-4">
-            <Button
-              onClick={() => setMode('online')}
-              className="w-full bg-primary hover:bg-primary/90 hover:shadow-[var(--shadow-glow)] transition-all duration-300 text-lg py-8"
-            >
-              <Wifi className="w-6 h-6 mr-2" />
-              Jogar online
-            </Button>
-            
-            <Button
-              onClick={() => setMode('local')}
-              variant="outline"
-              className="w-full border-2 border-primary/30 hover:bg-primary/10 text-lg py-8"
-            >
-              <WifiOff className="w-6 h-6 mr-2" />
-              Jogar local
-            </Button>
+      <div
+        className="min-h-screen flex flex-col items-center justify-between py-16 px-4"
+        style={{
+          background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)',
+        }}
+      >
+        {/* Centro — logo e título */}
+        <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
+          <div className="animate-glow-pulse">
+            <img
+              src="/biblia34.png"
+              alt="A Jornada"
+              className="w-28 h-28 object-contain"
+              style={{ filter: 'drop-shadow(0 0 20px hsl(45 95% 52% / 0.5))' }}
+            />
           </div>
+
+          <div className="space-y-2">
+            <h1 className="text-5xl font-bold text-gradient-gold tracking-tight">
+              A Jornada
+            </h1>
+            <p className="text-muted-foreground italic text-lg">
+              Uma aventura bíblica
+            </p>
+          </div>
+
+          {/* Ornamento */}
+          <div className="flex items-center gap-3 text-accent/40">
+            <div className="w-16 border-t border-accent/20" />
+            <span className="text-sm">✦</span>
+            <div className="w-16 border-t border-accent/20" />
+          </div>
+        </div>
+
+        {/* Botões na parte inferior */}
+        <div className="w-full max-w-sm space-y-3">
+          <Button
+            onClick={() => setMode('online')}
+            className="w-full bg-primary hover:bg-primary/90 text-lg py-7 gap-3 transition-all duration-300"
+            style={{ boxShadow: 'var(--shadow-glow)' }}
+          >
+            <WifiHigh size={22} />
+            Jogar Online
+          </Button>
+
+          <Button
+            onClick={() => setMode('local')}
+            variant="outline"
+            className="w-full border-2 border-primary/40 hover:bg-primary/10 hover:border-primary text-lg py-7 gap-3 transition-all duration-300"
+          >
+            <UsersThree size={22} />
+            Jogar Local
+          </Button>
         </div>
       </div>
     );
@@ -105,8 +133,9 @@ const Index = () => {
 
     if (loading) {
       return (
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-lg text-muted-foreground">Carregando...</p>
+        <div className="min-h-screen flex items-center justify-center"
+          style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}>
+          <p className="text-muted-foreground text-lg animate-pulse">Carregando...</p>
         </div>
       );
     }
