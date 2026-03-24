@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { GameCard } from "./GameCard";
@@ -56,7 +56,21 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
   const [diceValue, setDiceValue] = useState<number | null>(null);
   const [isRollingDice, setIsRollingDice] = useState(false);
   const [gamePhase, setGamePhase] = useState<'roll' | 'answer' | 'move'>('roll');
-  const [usedQuestionIndices, setUsedQuestionIndices] = useState<Set<number>>(new Set());
+  // useRef garante que drawCard sempre lê o valor atual,
+  // mesmo quando chamada dentro de closures capturadas (setTimeout / import().then)
+  const usedIndicesRef = useRef<Set<number>>(new Set());
+  const [, forceUpdate] = useState(0); // só para forçar re-render quando necessário
+
+  const markQuestionUsed = (index: number) => {
+    usedIndicesRef.current = new Set(usedIndicesRef.current);
+    usedIndicesRef.current.add(index);
+  };
+
+  const clearUsedForPool = (indices: number[]) => {
+    const next = new Set(usedIndicesRef.current);
+    indices.forEach(i => next.delete(i));
+    usedIndicesRef.current = next;
+  };
 
   const rollDice = () => {
     setIsRollingDice(true);
@@ -95,25 +109,20 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
         );
         const availablePool = questionsForLevel.length > 0 ? questionsForLevel : allQuestionsWithIndices;
 
-        let unusedQuestions = availablePool.filter(q => !usedQuestionIndices.has(q.originalIndex));
+        // Lê sempre do ref — nunca da closure stale do estado
+        let unusedQuestions = availablePool.filter(q => !usedIndicesRef.current.has(q.originalIndex));
 
         if (unusedQuestions.length === 0) {
-          const indicesToClear = new Set(availablePool.map(q => q.originalIndex));
-          setUsedQuestionIndices(prev => {
-            const newSet = new Set(prev);
-            indicesToClear.forEach(idx => newSet.delete(idx));
-            return newSet;
-          });
+          // Reseta só as perguntas deste pool
+          clearUsedForPool(availablePool.map(q => q.originalIndex));
           unusedQuestions = availablePool;
         }
 
-        const randomQuestion = unusedQuestions[Math.floor(Math.random() * unusedQuestions.length)];
+        // Embaralha para garantir distribuição uniforme mesmo com pools grandes
+        const shuffled = [...unusedQuestions].sort(() => Math.random() - 0.5);
+        const randomQuestion = shuffled[0];
 
-        setUsedQuestionIndices(prev => {
-          const newSet = new Set(prev);
-          newSet.add(randomQuestion.originalIndex);
-          return newSet;
-        });
+        markQuestionUsed(randomQuestion.originalIndex);
 
         const levelNames = ['', 'Fácil', 'Médio', 'Difícil'];
         card = {
