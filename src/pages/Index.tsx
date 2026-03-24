@@ -9,14 +9,14 @@ import { WifiHigh, UsersThree } from "@phosphor-icons/react";
 
 const Index = () => {
   const [mode, setMode] = useState<'menu' | 'local' | 'online'>('menu');
-  const [players, setPlayers] = useState<Array<{ name: string; avatar: string }>>([]);
+  const [players, setPlayers] = useState<Array<{ name: string; emoji: string }>>([]);
   const [gameStarted, setGameStarted] = useState(false);
   const [roomCode, setRoomCode] = useState<string | null>(null);
   const [playerName, setPlayerName] = useState<string>("");
 
   const { room, players: onlinePlayers, loading } = useGameRoom(roomCode);
 
-  const handlePlayersSubmit = (playerData: Array<{ name: string; avatar: string }>) => {
+  const handlePlayersSubmit = (playerData: Array<{ name: string; emoji: string }>) => {
     setPlayers(playerData);
     setGameStarted(true);
   };
@@ -35,25 +35,17 @@ const Index = () => {
 
   if (mode === 'menu') {
     return (
-      <div
-        className="min-h-screen flex flex-col items-center justify-between py-16 px-4"
-        style={{
-          background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)',
-        }}
-      >
+      <div className="min-h-screen flex flex-col items-center justify-between py-16 px-4 bg-background">
         {/* Centro — logo e título */}
         <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
-          <div className="animate-glow-pulse">
-            <img
-              src="/biblia34.png"
-              alt="A Jornada"
-              className="w-28 h-28 object-contain"
-              style={{ filter: 'drop-shadow(0 0 20px hsl(45 95% 52% / 0.5))' }}
-            />
-          </div>
+          <img
+            src="/biblia34.png"
+            alt="A Jornada"
+            className="w-28 h-28 object-contain"
+          />
 
           <div className="space-y-2">
-            <h1 className="text-5xl font-bold text-gradient-gold tracking-tight">
+            <h1 className="text-5xl font-bold text-foreground tracking-tight">
               A Jornada
             </h1>
             <p className="text-muted-foreground italic text-lg">
@@ -61,11 +53,10 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Ornamento */}
-          <div className="flex items-center gap-3 text-accent/40">
-            <div className="w-16 border-t border-accent/20" />
-            <span className="text-sm">✦</span>
-            <div className="w-16 border-t border-accent/20" />
+          <div className="flex items-center gap-3">
+            <div className="w-16 border-t border-border/40" />
+            <div className="w-2 h-2 rounded-full bg-primary/40" />
+            <div className="w-16 border-t border-border/40" />
           </div>
         </div>
 
@@ -74,7 +65,6 @@ const Index = () => {
           <Button
             onClick={() => setMode('online')}
             className="w-full bg-primary hover:bg-primary/90 text-lg py-7 gap-3 transition-all duration-300"
-            style={{ boxShadow: 'var(--shadow-glow)' }}
           >
             <WifiHigh size={22} />
             Jogar Online
@@ -124,8 +114,8 @@ const Index = () => {
     // Jogo em andamento
     if (room && room.status === 'playing') {
       return (
-        <GameBoard 
-          players={onlinePlayers.map(p => ({ name: p.name, avatar: '/avatars/dog.png' }))} 
+        <GameBoard
+          players={onlinePlayers.map(p => ({ name: p.name, emoji: '🐶' }))}
           onRestart={handleRestart}
         />
       );
@@ -133,8 +123,7 @@ const Index = () => {
 
     if (loading) {
       return (
-        <div className="min-h-screen flex items-center justify-center"
-          style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}>
+        <div className="min-h-screen flex items-center justify-center bg-background">
           <p className="text-muted-foreground text-lg animate-pulse">Carregando...</p>
         </div>
       );
