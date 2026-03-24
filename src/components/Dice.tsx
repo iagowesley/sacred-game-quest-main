@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-
 interface DiceProps {
   value: number;
   isRolling: boolean;
 }
 
-// Rotação do cubo para cada face ficar na frente
-// Faces: front=1, top=2, right=3, left=4, bottom=5, back=6
 const FACE_ROTATIONS: Record<number, string> = {
   1: "rotateX(0deg) rotateY(0deg)",
   2: "rotateX(-90deg) rotateY(0deg)",
@@ -50,7 +46,6 @@ function Face({ dots }: { dots: [number, number][] }) {
               borderRadius: "50%",
               background: isActive ? "hsl(270 50% 40%)" : "transparent",
               transform: isActive ? "scale(1)" : "scale(0)",
-              transition: "transform 0.2s",
               boxShadow: isActive
                 ? "inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.2)"
                 : "none",
@@ -62,7 +57,7 @@ function Face({ dots }: { dots: [number, number][] }) {
   );
 }
 
-const faceStyle = (transform: string): React.CSSProperties => ({
+const faceBase = (transform: string): React.CSSProperties => ({
   position: "absolute",
   width: "96px",
   height: "96px",
@@ -77,16 +72,11 @@ const faceStyle = (transform: string): React.CSSProperties => ({
 });
 
 export const Dice = ({ value, isRolling }: DiceProps) => {
-  const [cubeTransform, setCubeTransform] = useState(FACE_ROTATIONS[1]);
-
-  useEffect(() => {
-    if (!isRolling && value) {
-      const timer = setTimeout(() => {
-        setCubeTransform(FACE_ROTATIONS[value]);
-      }, 1200);
-      return () => clearTimeout(timer);
-    }
-  }, [isRolling, value]);
+  // Sem estado interno — o cubo sempre reflete `value` diretamente.
+  // Durante rolling: value muda a cada 100ms → transição rápida (visual de tumbling).
+  // Ao parar: transição suave para a face correta. Impossível de dessincronizar.
+  const safeValue = value >= 1 && value <= 6 ? value : 1;
+  const cubeTransform = FACE_ROTATIONS[safeValue];
 
   return (
     <div style={{ perspective: "400px", width: "96px", height: "96px", position: "relative" }}>
@@ -106,40 +96,24 @@ export const Dice = ({ value, isRolling }: DiceProps) => {
         }}
       />
       <div
-        className={isRolling ? "animate-dice-roll-3d-real" : ""}
         style={{
           width: "96px",
           height: "96px",
           position: "relative",
           transformStyle: "preserve-3d",
-          transform: isRolling ? undefined : cubeTransform,
-          transition: isRolling ? "none" : "transform 0.5s ease-out",
+          transform: cubeTransform,
+          // Rolling: transição rápida (tumbling). Parado: transição suave para face certa.
+          transition: isRolling
+            ? "transform 0.09s linear"
+            : "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         }}
       >
-        {/* Front — 1 */}
-        <div style={faceStyle("rotateY(0deg) translateZ(48px)")}>
-          <Face dots={DOT_POSITIONS[1]} />
-        </div>
-        {/* Back — 6 */}
-        <div style={faceStyle("rotateY(180deg) translateZ(48px)")}>
-          <Face dots={DOT_POSITIONS[6]} />
-        </div>
-        {/* Right — 3 */}
-        <div style={faceStyle("rotateY(90deg) translateZ(48px)")}>
-          <Face dots={DOT_POSITIONS[3]} />
-        </div>
-        {/* Left — 4 */}
-        <div style={faceStyle("rotateY(-90deg) translateZ(48px)")}>
-          <Face dots={DOT_POSITIONS[4]} />
-        </div>
-        {/* Top — 2 */}
-        <div style={faceStyle("rotateX(90deg) translateZ(48px)")}>
-          <Face dots={DOT_POSITIONS[2]} />
-        </div>
-        {/* Bottom — 5 */}
-        <div style={faceStyle("rotateX(-90deg) translateZ(48px)")}>
-          <Face dots={DOT_POSITIONS[5]} />
-        </div>
+        <div style={faceBase("rotateY(0deg) translateZ(48px)")}><Face dots={DOT_POSITIONS[1]} /></div>
+        <div style={faceBase("rotateY(180deg) translateZ(48px)")}><Face dots={DOT_POSITIONS[6]} /></div>
+        <div style={faceBase("rotateY(90deg) translateZ(48px)")}><Face dots={DOT_POSITIONS[3]} /></div>
+        <div style={faceBase("rotateY(-90deg) translateZ(48px)")}><Face dots={DOT_POSITIONS[4]} /></div>
+        <div style={faceBase("rotateX(90deg) translateZ(48px)")}><Face dots={DOT_POSITIONS[2]} /></div>
+        <div style={faceBase("rotateX(-90deg) translateZ(48px)")}><Face dots={DOT_POSITIONS[5]} /></div>
       </div>
     </div>
   );
