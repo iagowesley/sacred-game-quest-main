@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PlayerSetup } from "@/components/PlayerSetup";
 import { GameBoard } from "@/components/GameBoard";
+import { OnlineGameBoard } from "@/components/OnlineGameBoard";
 import { Lobby } from "@/components/Lobby";
 import { WaitingRoom } from "@/components/WaitingRoom";
 import { useGameRoom } from "@/hooks/useGameRoom";
@@ -112,10 +113,11 @@ const Index = () => {
     }
 
     // Jogo em andamento
-    if (room && room.status === 'playing') {
+    if (room && (room.status === 'playing' || room.status === 'finished')) {
       return (
-        <GameBoard
-          players={onlinePlayers.map(p => ({ name: p.name, emoji: '🐶' }))}
+        <OnlineGameBoard
+          roomId={room.id}
+          myPlayerName={playerName}
           onRestart={handleRestart}
         />
       );

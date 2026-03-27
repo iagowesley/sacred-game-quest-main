@@ -70,9 +70,10 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
 
       toast.success("Sala criada! Compartilhe o código com os amigos.");
       onJoinRoom(newRoomCode, playerName);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao criar sala:", error);
-      toast.error("Erro ao criar sala. Tente novamente.");
+      const msg = error?.message || error?.details || JSON.stringify(error);
+      toast.error(`Erro ao criar sala: ${msg}`);
     } finally {
       setLoading(false);
     }
@@ -137,9 +138,10 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
 
       toast.success("Entrou na sala!");
       onJoinRoom(roomCode.toUpperCase(), playerName);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao entrar na sala:", error);
-      toast.error("Erro ao entrar na sala. Tente novamente.");
+      const msg = error?.message || error?.details || JSON.stringify(error);
+      toast.error(`Erro ao entrar na sala: ${msg}`);
     } finally {
       setLoading(false);
     }
