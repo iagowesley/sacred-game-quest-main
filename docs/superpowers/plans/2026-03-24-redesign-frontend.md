@@ -945,7 +945,7 @@ if (mode === 'menu') {
       <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
         <div className="animate-glow-pulse">
           <img
-            src="/biblia34.png"
+            src="/cross.svg"
             alt="A Jornada"
             className="w-28 h-28 object-contain"
             style={{ filter: 'drop-shadow(0 0 20px hsl(45 95% 52% / 0.5))' }}
@@ -1051,7 +1051,7 @@ return (
       {/* Header */}
       <div className="text-center mb-8">
         <img
-          src="/biblia34.png"
+          src="/cross.svg"
           alt="A Jornada"
           className="w-20 h-20 object-contain mx-auto mb-4"
           style={{ filter: 'drop-shadow(0 0 12px hsl(45 95% 52% / 0.4))' }}

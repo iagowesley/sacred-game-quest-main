@@ -97,7 +97,7 @@ body {
 ### Menu Principal (`src/pages/Index.tsx` — modo `'menu'`)
 
 - **Fundo:** `min-h-screen` com gradiente radial `radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)` + partículas CSS (pseudo-elementos com `box-shadow` espalhados simulando estrelas)
-- **Logo:** `<img src="/biblia34.png">` com `w-28 h-28`, `filter drop-shadow` dourado e glow animado sutil
+- **Logo:** `<img src="/cross.svg">` com `w-28 h-28`, `filter drop-shadow` dourado e glow animado sutil
 - **Título:** "A Jornada" em `text-5xl font-bold` com gradiente de texto roxo→dourado via `bg-clip-text`
 - **Subtítulo:** *"Uma aventura bíblica"* em itálico, `text-muted-foreground`
 - **Botões (parte inferior):**

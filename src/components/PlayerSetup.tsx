@@ -5,14 +5,14 @@ import { Card } from "@/components/ui/card";
 import { UserPlus, X, Play } from "@phosphor-icons/react";
 
 const AVATARS = [
-  { id: 'dog',   emoji: '🐶', name: 'Cachorro' },
-  { id: 'cat',   emoji: '🐱', name: 'Gato'     },
-  { id: 'fox',   emoji: '🦊', name: 'Raposa'   },
-  { id: 'bear',  emoji: '🐻', name: 'Urso'     },
-  { id: 'pig',   emoji: '🐷', name: 'Porco'    },
-  { id: 'cow',   emoji: '🐮', name: 'Vaca'     },
-  { id: 'lion',  emoji: '🦁', name: 'Leão'     },
-  { id: 'koala', emoji: '🐨', name: 'Coala'    },
+  { id: 'dog', emoji: '🐶', name: 'Cachorro' },
+  { id: 'cat', emoji: '🐱', name: 'Gato' },
+  { id: 'fox', emoji: '🦊', name: 'Raposa' },
+  { id: 'bear', emoji: '🐻', name: 'Urso' },
+  { id: 'pig', emoji: '🐷', name: 'Porco' },
+  { id: 'cow', emoji: '🐮', name: 'Vaca' },
+  { id: 'lion', emoji: '🦁', name: 'Leão' },
+  { id: 'koala', emoji: '🐨', name: 'Coala' },
 ];
 
 interface PlayerSetupProps {
@@ -73,7 +73,7 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
         {/* Header */}
         <div className="text-center mb-8">
           <img
-            src="/biblia34.png"
+            src="/cross.svg"
             alt="A Jornada"
             className="w-20 h-20 object-contain mx-auto mb-4"
           />
@@ -112,11 +112,10 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
                     key={avatar.id}
                     type="button"
                     onClick={() => updatePlayerEmoji(index, avatar.emoji)}
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl transition-all hover:scale-110 border-2 ${
-                      player.emoji === avatar.emoji
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl transition-all hover:scale-110 border-2 ${player.emoji === avatar.emoji
                         ? 'border-primary bg-primary/15'
                         : 'border-border/40 hover:border-primary/50 bg-muted/30'
-                    }`}
+                      }`}
                     title={avatar.name}
                   >
                     {avatar.emoji}

@@ -40,7 +40,7 @@ const Index = () => {
         {/* Centro — logo e título */}
         <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
           <img
-            src="/biblia34.png"
+            src="/cross.svg"
             alt="A Jornada"
             className="w-28 h-28 object-contain"
           />
