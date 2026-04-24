@@ -7,7 +7,7 @@
 
 ## Resumo
 
-Modernização completa do visual do jogo bíblico "A Jornada": remoção do dourado, emojis iOS como avatares, dado CSS 3D real, popup de pergunta com X funcional, mais perguntas, e correção do sistema de dificuldade progressiva.
+Modernização completa do visual do jogo bíblico "A jornada": remoção do dourado, emojis iOS como avatares, dado CSS 3D real, popup de pergunta com X funcional, mais perguntas, e correção do sistema de dificuldade progressiva.
 
 ---
 

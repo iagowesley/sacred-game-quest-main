@@ -1,4 +1,4 @@
-# Design Spec: Redesign Frontend — A Jornada
+# Design Spec: Redesign Frontend — A jornada
 
 **Data:** 2026-03-24
 **Projeto:** sacred-game-quest-main
@@ -8,7 +8,7 @@
 
 ## Objetivo
 
-Modernizar completamente o frontend do jogo de tabuleiro cristão "A Jornada", mantendo toda a lógica de jogo intacta. As mudanças são exclusivamente visuais:
+Modernizar completamente o frontend do jogo de tabuleiro cristão "A jornada", mantendo toda a lógica de jogo intacta. As mudanças são exclusivamente visuais:
 
 1. Paleta moderna **roxo real + dourado**
 2. Fonte **Inter** (Google Fonts)
@@ -98,10 +98,10 @@ body {
 
 - **Fundo:** `min-h-screen` com gradiente radial `radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)` + partículas CSS (pseudo-elementos com `box-shadow` espalhados simulando estrelas)
 - **Logo:** `<img src="/cross.svg">` com `w-28 h-28`, `filter drop-shadow` dourado e glow animado sutil
-- **Título:** "A Jornada" em `text-5xl font-bold` com gradiente de texto roxo→dourado via `bg-clip-text`
+- **Título:** "A jornada" em `text-5xl font-bold` com gradiente de texto roxo→dourado via `bg-clip-text`
 - **Subtítulo:** *"Uma aventura bíblica"* em itálico, `text-muted-foreground`
 - **Botões (parte inferior):**
-  - "Jogar Online": Phosphor `WifiHigh` (substitui lucide `Wifi`) + texto, background roxo primário, hover com borda dourada
+  - "Jogar nline": Phosphor `WifiHigh` (substitui lucide `Wifi`) + texto, background roxo primário, hover com borda dourada
   - "Jogar Local": Phosphor `UsersThree` (substitui lucide `WifiOff` — ícone mudado intencionalmente para representar jogadores locais) + texto, variante outline com borda roxa
 
 ### Lobby (`src/components/Lobby.tsx`)
@@ -118,7 +118,7 @@ body {
 ### PlayerSetup (`src/components/PlayerSetup.tsx`)
 
 - Card central com mesmo estilo (borda roxa, fundo card escuro)
-- Header: logo da Bíblia + título "A Jornada"
+- Header: logo da Bíblia + título "A jornada"
 - Avatar selecionado: `ring-2 ring-accent shadow-[var(--shadow-gold)]`
 - Botão "Adicionar jogador": Phosphor `UserPlus`
 - Botão "Iniciar jogo": Phosphor `Play`, background roxo primário
@@ -181,7 +181,7 @@ body {
 ### GameCard — Pergunta (`src/components/GameCard.tsx`)
 
 - Dialog com `backdrop-blur-md bg-black/40`
-- **Header:** gradiente `from-primary to-primary/70`, Phosphor `BookOpenText` (`w-10 h-10`) no canto direito com `text-white/30`, título "Pergunta Bíblica" em bold, subtítulo "Responda para avançar"
+- **Header:** gradiente `from-primary to-primary/70`, Phosphor `BookOpenText` (`w-10 h-10`) no canto direito com `text-white/30`, título "Pergunta íblica" em bold, subtítulo "Responda para avançar"
 - **Corpo:** pergunta em caixa `bg-card border border-primary/30 rounded-xl p-6`
 - **Opções:** botões com badge de letra (A/B/C/D) em `bg-primary text-primary-foreground rounded-full w-8 h-8`
   - Hover: `border-accent`

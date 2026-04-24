@@ -45,7 +45,7 @@ export const WaitingRoom = ({ roomCode, players, isHost, roomId }: WaitingRoomPr
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}
+      style={{ background: 'radial-gradient(ellipse at center, hsl(220 11% 16%) 0%, hsl(220 13% 9%) 70%)' }}
     >
       <Card className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
         <div className="space-y-6">

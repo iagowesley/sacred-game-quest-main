@@ -44,7 +44,7 @@ function Face({ dots }: { dots: [number, number][] }) {
             key={idx}
             style={{
               borderRadius: "50%",
-              background: isActive ? "hsl(270 50% 40%)" : "transparent",
+              background: isActive ? "hsl(101 98% 40%)" : "transparent",
               transform: isActive ? "scale(1)" : "scale(0)",
               boxShadow: isActive
                 ? "inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.2)"

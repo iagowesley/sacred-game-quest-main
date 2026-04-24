@@ -1,31 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 270 20% 8%;
-    --foreground: 45 30% 92%;
+    --background: 220 13% 9%;
+    --foreground: 0 0% 94%;
 
-    --card: 270 18% 13%;
-    --card-foreground: 45 30% 92%;
+    --card: 220 11% 14%;
+    --card-foreground: 0 0% 94%;
 
-    --popover: 270 18% 13%;
-    --popover-foreground: 45 30% 92%;
+    --popover: 220 11% 14%;
+    --popover-foreground: 0 0% 94%;
 
-    --primary: 270 60% 55%;
-    --primary-foreground: 45 30% 95%;
+    --primary: 101 98% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 20% 20%;
-    --secondary-foreground: 45 30% 92%;
+    --secondary: 220 10% 20%;
+    --secondary-foreground: 0 0% 94%;
 
-    --muted: 270 15% 20%;
-    --muted-foreground: 270 10% 60%;
+    --muted: 220 9% 18%;
+    --muted-foreground: 220 7% 64%;
 
     --accent: 0 0% 88%;
-    --accent-foreground: 270 20% 8%;
+    --accent-foreground: 220 13% 9%;
 
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 98%;
@@ -33,14 +31,15 @@
     --success: 145 55% 38%;
     --success-foreground: 0 0% 98%;
 
-    --border: 270 20% 25%;
-    --input: 270 18% 16%;
-    --ring: 270 60% 55%;
+    --border: 220 8% 26%;
+    --input: 220 10% 16%;
+    --ring: 101 98% 40%;
+    --button-shadow: 101 100% 26%;
 
     --radius: 0.75rem;
 
-    --board-square: 270 25% 18%;
-    --board-bonus: 270 60% 55%;
+    --board-square: 220 10% 17%;
+    --board-bonus: 101 98% 40%;
     --board-forward: 145 55% 38%;
     --board-back: 0 65% 48%;
 
@@ -51,7 +50,7 @@
       0 8px 8px hsl(0 0% 0% / 0.12),
       0 16px 16px hsl(0 0% 0% / 0.12);
 
-    --shadow-glow: 0 0 20px hsl(270 60% 55% / 0.5);
+    --shadow-glow: 0 0 20px hsl(101 98% 40% / 0.45);
     --shadow-gold: 0 0 15px rgba(255,255,255,0.12);
 
     --shadow-piece:
@@ -67,25 +66,26 @@
   }
 
   .dark {
-    --background: 270 20% 8%;
-    --foreground: 45 30% 92%;
-    --card: 270 18% 13%;
-    --card-foreground: 45 30% 92%;
-    --popover: 270 18% 13%;
-    --popover-foreground: 45 30% 92%;
-    --primary: 270 60% 55%;
-    --primary-foreground: 45 30% 95%;
-    --secondary: 270 20% 20%;
-    --secondary-foreground: 45 30% 92%;
-    --muted: 270 15% 20%;
-    --muted-foreground: 270 10% 60%;
+    --background: 220 13% 9%;
+    --foreground: 0 0% 94%;
+    --card: 220 11% 14%;
+    --card-foreground: 0 0% 94%;
+    --popover: 220 11% 14%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 101 98% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 10% 20%;
+    --secondary-foreground: 0 0% 94%;
+    --muted: 220 9% 18%;
+    --muted-foreground: 220 7% 64%;
     --accent: 0 0% 88%;
-    --accent-foreground: 270 20% 8%;
+    --accent-foreground: 220 13% 9%;
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 98%;
-    --border: 270 20% 25%;
-    --input: 270 18% 16%;
-    --ring: 270 60% 55%;
+    --border: 220 8% 26%;
+    --input: 220 10% 16%;
+    --ring: 101 98% 40%;
+    --button-shadow: 101 100% 26%;
   }
 }
 
@@ -96,7 +96,17 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+}
+
+@layer components {
+  .duo-icon-button {
+    @apply inline-flex items-center justify-center rounded-2xl border-2 border-b-4 border-primary/45 bg-background text-foreground shadow-[0_5px_0_hsl(var(--button-shadow))] transition-all duration-150 hover:-translate-y-0.5 hover:border-primary/70 hover:bg-primary/10 hover:text-primary hover:shadow-[0_6px_0_hsl(var(--button-shadow))] active:translate-y-0.5 active:border-b-2 active:shadow-[0_2px_0_hsl(var(--button-shadow))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .duo-avatar-button {
+    @apply inline-flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-b-4 bg-muted/30 text-4xl shadow-[0_4px_0_hsl(var(--button-shadow))] transition-all duration-150 hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_5px_0_hsl(var(--button-shadow))] active:translate-y-0.5 active:border-b-2 active:shadow-[0_2px_0_hsl(var(--button-shadow))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 }
 

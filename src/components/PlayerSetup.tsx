@@ -69,15 +69,15 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <Card className="w-full max-w-2xl bg-card border border-border/50 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
+      <Card className="w-full max-w-3xl bg-card border border-border/50 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
         {/* Header */}
         <div className="text-center mb-8">
           <img
             src="/cross.svg"
-            alt="A Jornada"
+            alt="A jornada"
             className="w-20 h-20 object-contain mx-auto mb-4"
           />
-          <h1 className="text-3xl font-bold text-foreground mb-1">A Jornada</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-1">A jornada</h1>
           <p className="text-muted-foreground">Perguntas e desafios sobre a bíblia e a igreja</p>
         </div>
 
@@ -106,15 +106,15 @@ export const PlayerSetup = ({ onStartGame }: PlayerSetupProps) => {
                   </Button>
                 )}
               </div>
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex flex-wrap gap-3">
                 {AVATARS.map((avatar) => (
                   <button
                     key={avatar.id}
                     type="button"
                     onClick={() => updatePlayerEmoji(index, avatar.emoji)}
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl transition-all hover:scale-110 border-2 ${player.emoji === avatar.emoji
-                        ? 'border-primary bg-primary/15'
-                        : 'border-border/40 hover:border-primary/50 bg-muted/30'
+                    className={`duo-avatar-button ${player.emoji === avatar.emoji
+                        ? 'border-primary bg-primary/15 text-primary'
+                        : 'border-border/40 hover:border-primary/50'
                       }`}
                     title={avatar.name}
                   >

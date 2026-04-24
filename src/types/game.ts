@@ -10,7 +10,7 @@ export interface Player {
   name: string;
   position: number;
   color: string;
-  difficultyLevel: number; // 1 = fácil, 2 = médio, 3 = difícil
+  difficultyLevel: number; // 2 = médio, 3 = difícil
   emoji?: string;
   theme?: string; // tema sorteado para o jogador
   correctAnswers?: number; // contador de respostas corretas
@@ -21,5 +21,5 @@ export interface Question {
   question: string;
   options: string[];
   correct: number;
-  difficulty: number; // 1 = fácil, 2 = médio, 3 = difícil
+  difficulty: number; // 2 = médio, 3 = difícil
 }

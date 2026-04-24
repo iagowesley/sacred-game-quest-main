@@ -9,9 +9,13 @@ import { GameCard } from "./GameCard";
 import { Trophy, ArrowCounterClockwise, DiceFive, Crown } from "@phosphor-icons/react";
 import { BoardSquare as BoardSquareType } from "@/types/game";
 import { toast } from "sonner";
+import { getQuestionLevelName, normalizeQuestionDifficulty, selectQuestionForLevel } from "@/lib/questionSelection";
 
 const EMOJIS = ['🐶', '🐱', '🦊', '🐻', '🐷', '🐮', '🦁', '🐨'];
 const TOTAL_SQUARES = 30;
+const BOARD_SQUARE_SIZE = 92;
+const BOARD_PIECE_SIZE = 38;
+const SIDEBAR_PIECE_SIZE = 46;
 
 interface DbPlayer {
   id: string;
@@ -113,19 +117,9 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
     let card: any;
 
     if (rotation === 0) {
-      const allWithIdx = questions.map((q, i) => ({ ...q, originalIndex: i }));
-      const forLevel = allWithIdx.filter(q => q.difficulty === player.difficulty_level);
-      const pool = forLevel.length > 0 ? forLevel : allWithIdx;
-      let unused = pool.filter(q => !usedIndicesRef.current.has(q.originalIndex));
-      if (unused.length === 0) {
-        pool.forEach(q => usedIndicesRef.current.delete(q.originalIndex));
-        unused = pool;
-      }
-      const picked = [...unused].sort(() => Math.random() - 0.5)[0];
-      usedIndicesRef.current.add(picked.originalIndex);
+      const picked = selectQuestionForLevel(questions, player.difficulty_level, usedIndicesRef.current);
       card = { type: 'question', question: picked.question, options: picked.options, correct: picked.correct };
-      const names = ['', 'Fácil', 'Médio', 'Difícil'];
-      toast.info(`Pergunta — Nível: ${names[player.difficulty_level]}`);
+      toast.info(`Pergunta — Nível: ${getQuestionLevelName(player.difficulty_level)}`);
     } else if (rotation === 1) {
       const pool = challenges.filter(c =>
         !c.toLowerCase().includes('iasd') && !c.toLowerCase().includes('adventista') &&
@@ -203,7 +197,7 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
     const isCorrect = answerIndex === gameState.current_card?.correct;
 
     let newPosition = currentPlayerData.position;
-    let newDifficulty = currentPlayerData.difficulty_level;
+    let newDifficulty = normalizeQuestionDifficulty(currentPlayerData.difficulty_level);
     let newCorrectAnswers = (currentPlayerData.correct_answers ?? 0);
 
     if (isCorrect) {
@@ -213,8 +207,7 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
       if (newCorrectAnswers >= 2 && newDifficulty < 3) {
         newDifficulty += 1;
         newCorrectAnswers = 0;
-        const names = ['', 'Fácil', 'Médio', 'Difícil'];
-        setTimeout(() => toast.info(`Nível aumentado para ${names[newDifficulty]}!`), 1500);
+        setTimeout(() => toast.info(`Nível aumentado para ${getQuestionLevelName(newDifficulty)}!`), 1500);
       }
     } else {
       toast.error('Resposta errada! Você fica parado');
@@ -237,26 +230,26 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
 
   const getPlayersAtPosition = (pos: number) => dbPlayers.filter(p => p.position === pos);
 
-  const connH = { borderTop: '2px dashed hsl(270 40% 35% / 0.5)', background: 'none' } as React.CSSProperties;
-  const connV = { borderLeft: '2px dashed hsl(270 40% 35% / 0.5)', background: 'none' } as React.CSSProperties;
+  const connH = { borderTop: '2px dashed hsl(220 8% 38% / 0.5)', background: 'none' } as React.CSSProperties;
+  const connV = { borderLeft: '2px dashed hsl(220 8% 38% / 0.5)', background: 'none' } as React.CSSProperties;
 
   const renderSquares = (squares: BoardSquareType[], reverseConnector: boolean, showVerticalOnLast: boolean) =>
     squares.map((square, i) => {
       const isLast = i === squares.length - 1;
-      const connSide = reverseConnector ? '-left-4' : '-right-4';
+      const connSide = reverseConnector ? '-left-5' : '-right-5';
       return (
         <div key={square.id} className="relative flex-1">
-          <BoardSquare square={square} size={70} />
+          <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
           {!isLast && (
-            <div className={`absolute top-1/2 ${connSide} w-6 h-1 z-0`} style={{ transform: 'translateY(-50%)', ...connH }} />
+            <div className={`absolute top-1/2 ${connSide} z-0 h-1 w-8`} style={{ transform: 'translateY(-50%)', ...connH }} />
           )}
           {isLast && showVerticalOnLast && (
-            <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0" style={{ transform: 'translateX(-50%)', ...connV }} />
+            <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-1" style={{ transform: 'translateX(-50%)', ...connV }} />
           )}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex flex-wrap gap-0.5 justify-center">
               {getPlayersAtPosition(square.id).map((p, idx) => (
-                <PlayerPiece key={idx} color={p.color} name={p.name} size={28} emoji={EMOJIS[p.player_order] ?? '🐶'} />
+                <PlayerPiece key={idx} color={p.color} name={p.name} size={BOARD_PIECE_SIZE} emoji={EMOJIS[p.player_order] ?? '🐶'} />
               ))}
             </div>
           </div>
@@ -274,7 +267,7 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
 
   return (
     <div className="min-h-screen p-4 flex flex-col items-center justify-center bg-background">
-      <div className="max-w-7xl mx-auto w-full">
+      <div className="mx-auto w-full max-w-[1500px]">
         {/* Header */}
         <div className="flex justify-between items-center mb-4 bg-card px-5 py-3 rounded-xl border border-border/50">
           <div className="flex items-center gap-3">
@@ -282,7 +275,7 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
               <Trophy size={20} weight="fill" className="text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground tracking-wide">A Jornada — Online</h1>
+              <h1 className="text-xl font-bold text-foreground tracking-wide">A jornada — Online</h1>
               {!winner && currentPlayerData && (
                 <p className="text-xs text-muted-foreground">
                   {isMyTurn
@@ -303,14 +296,14 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Tabuleiro */}
           <div className="lg:col-span-2">
-            <div className="p-6 rounded-2xl"
-              style={{ background: 'hsl(270 20% 11%)', border: '2px solid hsl(270 20% 20%)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+            <div className="rounded-2xl p-8"
+              style={{ background: 'hsl(220 11% 12%)', border: '2px solid hsl(220 8% 24%)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
               <div className="relative z-10">
-                <div className="flex gap-2 mb-12">{renderSquares(board.slice(0, 6), false, true)}</div>
-                <div className="flex flex-row-reverse gap-2 mb-12">{renderSquares(board.slice(6, 12), true, true)}</div>
-                <div className="flex gap-2 mb-12">{renderSquares(board.slice(12, 18), false, true)}</div>
-                <div className="flex flex-row-reverse gap-2 mb-12">{renderSquares(board.slice(18, 24), true, true)}</div>
-                <div className="flex gap-2 mb-4">{renderSquares(board.slice(24, 31), false, false)}</div>
+                <div className="mb-16 flex gap-3">{renderSquares(board.slice(0, 6), false, true)}</div>
+                <div className="mb-16 flex flex-row-reverse gap-3">{renderSquares(board.slice(6, 12), true, true)}</div>
+                <div className="mb-16 flex gap-3">{renderSquares(board.slice(12, 18), false, true)}</div>
+                <div className="mb-16 flex flex-row-reverse gap-3">{renderSquares(board.slice(18, 24), true, true)}</div>
+                <div className="mb-4 flex gap-3">{renderSquares(board.slice(24, 31), false, false)}</div>
               </div>
             </div>
           </div>
@@ -327,9 +320,9 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
                   return (
                     <div key={player.id}
                       className={`p-3 rounded-lg transition-all ${isActive ? 'bg-primary/15 border-2 border-primary' : 'bg-muted/30 border border-border/30'}`}
-                      style={isActive ? { boxShadow: '0 0 12px hsl(270 60% 55% / 0.3)' } : undefined}>
+                      style={isActive ? { boxShadow: '0 0 12px hsl(101 98% 40% / 0.28)' } : undefined}>
                       <div className="flex items-center gap-3">
-                        <PlayerPiece color={player.color} name={player.name} size={36} emoji={EMOJIS[player.player_order] ?? '🐶'} />
+                        <PlayerPiece color={player.color} name={player.name} size={SIDEBAR_PIECE_SIZE} emoji={EMOJIS[player.player_order] ?? '🐶'} />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5">
                             {isActive && <Crown size={13} weight="fill" className="text-primary flex-shrink-0" />}
@@ -338,7 +331,7 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
                             </div>
                           </div>
                           <div className="text-xs text-muted-foreground mb-1">
-                            Casa {player.position}/{TOTAL_SQUARES} · Nível {player.difficulty_level}
+                            Casa {player.position}/{TOTAL_SQUARES} · Nível {getQuestionLevelName(player.difficulty_level)}
                           </div>
                           <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                             <div className="h-full bg-primary/60 rounded-full transition-all duration-500"

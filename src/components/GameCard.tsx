@@ -34,34 +34,27 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete, onClose }: GameC
 
     return (
       <Dialog open={true} onOpenChange={(open) => { if (!open && !showFeedback) onClose(); }}>
-        <DialogContent className="max-w-2xl p-0 overflow-hidden border border-primary/30 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
+        <DialogContent className="max-w-4xl p-0 overflow-hidden border border-primary/30 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
           {/* Header */}
-          <div className="relative h-24 overflow-hidden bg-primary flex items-end p-5">
+          <div className="relative flex h-32 items-end overflow-hidden bg-primary p-8">
             <div className="relative z-10">
-              <h3 className="text-xl font-bold text-white">Pergunta Bíblica</h3>
-              <p className="text-sm text-white/75">Responda corretamente para avançar</p>
+              <h3 className="text-3xl font-bold text-white">Pergunta Bíblica</h3>
+              <p className="text-base text-white/75">Responda corretamente para avançar</p>
             </div>
-            <button
-              onClick={() => { if (!showFeedback) onClose(); }}
-              className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-              aria-label="Fechar"
-            >
-              <X size={16} className="text-white" />
-            </button>
           </div>
 
           {/* Body */}
-          <div className="p-6 space-y-5">
-            <div className="p-5 bg-muted/50 border border-primary/20 rounded-xl relative">
-              <span className="absolute -top-3 left-4 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
+          <div className="space-y-7 p-8">
+            <div className="relative rounded-2xl border border-primary/20 bg-muted/50 p-7">
+              <span className="absolute -top-4 left-5 rounded-full bg-primary px-3 py-1 text-sm font-semibold text-primary-foreground">
                 Pergunta
               </span>
-              <p className="text-base font-semibold text-foreground leading-relaxed">
+              <p className="text-xl font-semibold leading-relaxed text-foreground">
                 {card.question}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-2.5">
+            <div className="grid grid-cols-1 gap-4">
               {card.options.map((option: string, index: number) => {
                 const isSelected = selectedAnswer === index;
                 const showCorrect = showFeedback && index === card.correct;
@@ -73,7 +66,7 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete, onClose }: GameC
                     onClick={() => !showFeedback && handleAnswer(index)}
                     disabled={showFeedback}
                     variant="outline"
-                    className={`h-auto py-3 px-4 text-sm border-2 transition-all duration-300 justify-start gap-3 ${
+                    className={`h-auto justify-start gap-4 border-2 px-6 py-5 text-base transition-all duration-300 ${
                       showCorrect
                         ? 'border-green-500 bg-green-500/10 text-foreground'
                         : showWrong
@@ -81,13 +74,13 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete, onClose }: GameC
                         : 'border-border hover:border-primary hover:bg-primary/10'
                     }`}
                   >
-                    <span className={`w-7 h-7 flex items-center justify-center flex-shrink-0 rounded-full text-xs font-bold ${
+                    <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold ${
                       showCorrect ? 'bg-green-500 text-white' : showWrong ? 'bg-red-500 text-white' : 'bg-primary text-primary-foreground'
                     }`}>
                       {showCorrect
-                        ? <CheckCircle size={14} weight="fill" />
+                        ? <CheckCircle size={18} weight="fill" />
                         : showWrong
-                        ? <XCircle size={14} weight="fill" />
+                        ? <XCircle size={18} weight="fill" />
                         : String.fromCharCode(65 + index)}
                     </span>
                     <span>{option}</span>
@@ -106,47 +99,40 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete, onClose }: GameC
 
   return (
     <Dialog open={true} onOpenChange={(open) => { if (!open) onChallengeComplete(false); }}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden border border-border/40 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
+      <DialogContent className="max-w-4xl p-0 overflow-hidden border border-border/40 bg-card animate-card-entrance" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
         {/* Header */}
-        <div className="relative h-24 overflow-hidden bg-muted flex items-end p-5">
+        <div className="relative flex h-32 items-end overflow-hidden bg-muted p-8">
           <div className="relative z-10">
-            <h3 className="text-xl font-bold text-foreground">Prenda!</h3>
-            <p className="text-sm text-muted-foreground">Complete o desafio para avançar</p>
+            <h3 className="text-3xl font-bold text-foreground">Prenda!</h3>
+            <p className="text-base text-muted-foreground">Complete o desafio para avançar</p>
           </div>
-          <button
-            onClick={() => onChallengeComplete(false)}
-            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-foreground/10 hover:bg-foreground/20 flex items-center justify-center transition-colors"
-            aria-label="Fechar"
-          >
-            <X size={16} className="text-foreground/70" />
-          </button>
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-5">
-          <div className="p-5 bg-muted/50 border border-border/30 rounded-xl relative">
-            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
+        <div className="space-y-7 p-8">
+          <div className="relative rounded-2xl border border-border/30 bg-muted/50 p-7">
+            <span className="absolute -top-4 left-5 rounded-full bg-primary px-3 py-1 text-sm font-semibold text-primary-foreground">
               Desafio
             </span>
-            <p className="text-base font-semibold text-foreground leading-relaxed">
+            <p className="text-xl font-semibold leading-relaxed text-foreground">
               {card.text}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <Button
               onClick={() => onChallengeComplete(false)}
               variant="outline"
-              className="h-12 text-sm border-2 border-destructive/40 hover:bg-destructive/10 hover:border-destructive gap-2"
+              className="min-h-16 gap-2 border-2 border-destructive/40 text-base hover:border-destructive hover:bg-destructive/10"
             >
-              <X size={16} />
+              <X size={20} />
               Não completou
             </Button>
             <Button
               onClick={() => onChallengeComplete(true)}
-              className="h-12 text-sm bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
+              className="min-h-16 gap-2 bg-primary text-base text-primary-foreground hover:bg-primary/90"
             >
-              <CheckFat size={16} weight="fill" />
+              <CheckFat size={20} weight="fill" />
               Completou!
             </Button>
           </div>

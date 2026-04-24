@@ -8,6 +8,7 @@ import { Trophy, ArrowCounterClockwise, DiceFive, Crown } from "@phosphor-icons/
 import { Player, BoardSquare as BoardSquareType } from "@/types/game";
 import { toast } from "sonner";
 import { Dice } from "./Dice";
+import { getQuestionLevelName, normalizeQuestionDifficulty, selectQuestionForLevel } from "@/lib/questionSelection";
 
 interface GameBoardProps {
   players: Array<{ name: string; emoji: string }>;
@@ -20,6 +21,9 @@ const PLAYER_COLORS = [
 ];
 
 const TOTAL_SQUARES = 30;
+const BOARD_SQUARE_SIZE = 92;
+const BOARD_PIECE_SIZE = 38;
+const SIDEBAR_PIECE_SIZE = 46;
 
 const generateBoard = (): BoardSquareType[] => {
   const board: BoardSquareType[] = [];
@@ -41,7 +45,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
       name: player.name,
       position: 0,
       color: PLAYER_COLORS[i],
-      difficultyLevel: 1,
+      difficultyLevel: 2,
       emoji: player.emoji,
       correctAnswers: 0,
       cardRotation: 0,
@@ -56,21 +60,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
   const [diceValue, setDiceValue] = useState<number | null>(null);
   const [isRollingDice, setIsRollingDice] = useState(false);
   const [gamePhase, setGamePhase] = useState<'roll' | 'answer' | 'move'>('roll');
-  // useRef garante que drawCard sempre lê o valor atual,
-  // mesmo quando chamada dentro de closures capturadas (setTimeout / import().then)
   const usedIndicesRef = useRef<Set<number>>(new Set());
-  const [, forceUpdate] = useState(0); // só para forçar re-render quando necessário
-
-  const markQuestionUsed = (index: number) => {
-    usedIndicesRef.current = new Set(usedIndicesRef.current);
-    usedIndicesRef.current.add(index);
-  };
-
-  const clearUsedForPool = (indices: number[]) => {
-    const next = new Set(usedIndicesRef.current);
-    indices.forEach(i => next.delete(i));
-    usedIndicesRef.current = next;
-  };
 
   const rollDice = () => {
     setIsRollingDice(true);
@@ -103,35 +93,19 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
       let card;
 
       if (rotation === 0) {
-        const allQuestionsWithIndices = questions.map((q, index) => ({ ...q, originalIndex: index }));
-        const questionsForLevel = allQuestionsWithIndices.filter(
-          q => q.difficulty === currentPlayerData.difficultyLevel
+        const randomQuestion = selectQuestionForLevel(
+          questions,
+          currentPlayerData.difficultyLevel,
+          usedIndicesRef.current,
         );
-        const availablePool = questionsForLevel.length > 0 ? questionsForLevel : allQuestionsWithIndices;
 
-        // Lê sempre do ref — nunca da closure stale do estado
-        let unusedQuestions = availablePool.filter(q => !usedIndicesRef.current.has(q.originalIndex));
-
-        if (unusedQuestions.length === 0) {
-          // Reseta só as perguntas deste pool
-          clearUsedForPool(availablePool.map(q => q.originalIndex));
-          unusedQuestions = availablePool;
-        }
-
-        // Embaralha para garantir distribuição uniforme mesmo com pools grandes
-        const shuffled = [...unusedQuestions].sort(() => Math.random() - 0.5);
-        const randomQuestion = shuffled[0];
-
-        markQuestionUsed(randomQuestion.originalIndex);
-
-        const levelNames = ['', 'Fácil', 'Médio', 'Difícil'];
         card = {
           type: 'question',
           question: randomQuestion.question,
           options: randomQuestion.options,
           correct: randomQuestion.correct,
         };
-        toast.info(`Pergunta — Nível: ${levelNames[currentPlayerData.difficultyLevel]}`);
+        toast.info(`Pergunta — Nível: ${getQuestionLevelName(currentPlayerData.difficultyLevel)}`);
 
       } else if (rotation === 1) {
         const biblicalChallenges = challenges.filter(c =>
@@ -194,7 +168,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
       const player = players[currentPlayer];
 
       let newCorrectAnswers = player.correctAnswers || 0;
-      let newDifficultyLevel = player.difficultyLevel;
+      let newDifficultyLevel = normalizeQuestionDifficulty(player.difficultyLevel);
 
       if (isCorrect) {
         newCorrectAnswers += 1;
@@ -204,9 +178,8 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
         if (newCorrectAnswers >= 2 && newDifficultyLevel < 3) {
           newDifficultyLevel += 1;
           newCorrectAnswers = 0;
-          const levelNames = ['', 'Fácil', 'Médio', 'Difícil'];
           setTimeout(() => {
-            toast.info(`Nível aumentado para ${levelNames[newDifficultyLevel]}!`);
+            toast.info(`Nível aumentado para ${getQuestionLevelName(newDifficultyLevel)}!`);
           }, 1500);
         }
       } else {
@@ -260,12 +233,12 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
     return players.filter(p => p.position === position);
   };
 
-  const connectorH = { borderTop: '2px dashed hsl(270 40% 35% / 0.5)', background: 'none' };
-  const connectorV = { borderLeft: '2px dashed hsl(270 40% 35% / 0.5)', background: 'none' };
+  const connectorH = { borderTop: '2px dashed hsl(220 8% 38% / 0.5)', background: 'none' };
+  const connectorV = { borderLeft: '2px dashed hsl(220 8% 38% / 0.5)', background: 'none' };
 
   return (
     <div className="min-h-screen p-4 flex flex-col items-center justify-center bg-background">
-      <div className="max-w-7xl mx-auto w-full">
+      <div className="mx-auto w-full max-w-[1500px]">
         {/* Header */}
         <div className="flex justify-between items-center mb-4 bg-card px-5 py-3 rounded-xl border border-border/50">
           <div className="flex items-center gap-3">
@@ -273,7 +246,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
               <Trophy size={20} weight="fill" className="text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground tracking-wide">A Jornada</h1>
+              <h1 className="text-xl font-bold text-foreground tracking-wide">A jornada</h1>
               {!winner && (
                 <p className="text-xs text-muted-foreground">
                   Vez de: <span className="font-semibold text-foreground">{players[currentPlayer].name}</span>
@@ -298,25 +271,25 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
           {/* Board */}
           <div className="lg:col-span-2">
             <div
-              className="p-6 rounded-2xl relative overflow-hidden"
+              className="relative overflow-hidden rounded-2xl p-8"
               style={{
-                background: 'hsl(270 20% 11%)',
-                border: '2px solid hsl(270 20% 20%)',
+                background: 'hsl(220 11% 12%)',
+                border: '2px solid hsl(220 8% 24%)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
               }}
             >
               {/* Caminho do Jogo - Layout Serpentine */}
               <div className="relative z-10">
                 {/* Linha 1: 0-5 (esquerda para direita) */}
-                <div className="flex gap-2 mb-12">
+                <div className="mb-16 flex gap-3">
                   {board.slice(0, 6).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
-                      <BoardSquare square={square} size={70} />
+                      <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
                       {i < 5 && (
-                        <div className="absolute top-1/2 -right-4 w-6 h-1 z-0" style={{ transform: 'translateY(-50%)', ...connectorH }} />
+                        <div className="absolute top-1/2 -right-5 z-0 h-1 w-8" style={{ transform: 'translateY(-50%)', ...connectorH }} />
                       )}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0" style={{ transform: 'translateX(-50%)', ...connectorV }} />
+                        <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-1" style={{ transform: 'translateX(-50%)', ...connectorV }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -325,7 +298,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                               key={idx}
                               color={player.color}
                               name={player.name}
-                              size={28}
+                              size={BOARD_PIECE_SIZE}
                               animate={animatingPlayer === players.indexOf(player)}
                               emoji={player.emoji}
                             />
@@ -337,15 +310,15 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                 </div>
 
                 {/* Linha 2: 6-11 (direita para esquerda) */}
-                <div className="flex flex-row-reverse gap-2 mb-12">
+                <div className="mb-16 flex flex-row-reverse gap-3">
                   {board.slice(6, 12).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
-                      <BoardSquare square={square} size={70} />
+                      <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
                       {i < 5 && (
-                        <div className="absolute top-1/2 -left-4 w-6 h-1 z-0" style={{ transform: 'translateY(-50%)', ...connectorH }} />
+                        <div className="absolute top-1/2 -left-5 z-0 h-1 w-8" style={{ transform: 'translateY(-50%)', ...connectorH }} />
                       )}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0" style={{ transform: 'translateX(-50%)', ...connectorV }} />
+                        <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-1" style={{ transform: 'translateX(-50%)', ...connectorV }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -354,7 +327,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                               key={idx}
                               color={player.color}
                               name={player.name}
-                              size={28}
+                              size={BOARD_PIECE_SIZE}
                               animate={animatingPlayer === players.indexOf(player)}
                               emoji={player.emoji}
                             />
@@ -366,15 +339,15 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                 </div>
 
                 {/* Linha 3: 12-17 (esquerda para direita) */}
-                <div className="flex gap-2 mb-12">
+                <div className="mb-16 flex gap-3">
                   {board.slice(12, 18).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
-                      <BoardSquare square={square} size={70} />
+                      <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
                       {i < 5 && (
-                        <div className="absolute top-1/2 -right-4 w-6 h-1 z-0" style={{ transform: 'translateY(-50%)', ...connectorH }} />
+                        <div className="absolute top-1/2 -right-5 z-0 h-1 w-8" style={{ transform: 'translateY(-50%)', ...connectorH }} />
                       )}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0" style={{ transform: 'translateX(-50%)', ...connectorV }} />
+                        <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-1" style={{ transform: 'translateX(-50%)', ...connectorV }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -383,7 +356,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                               key={idx}
                               color={player.color}
                               name={player.name}
-                              size={28}
+                              size={BOARD_PIECE_SIZE}
                               animate={animatingPlayer === players.indexOf(player)}
                               emoji={player.emoji}
                             />
@@ -395,15 +368,15 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                 </div>
 
                 {/* Linha 4: 18-23 (direita para esquerda) */}
-                <div className="flex flex-row-reverse gap-2 mb-12">
+                <div className="mb-16 flex flex-row-reverse gap-3">
                   {board.slice(18, 24).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
-                      <BoardSquare square={square} size={70} />
+                      <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
                       {i < 5 && (
-                        <div className="absolute top-1/2 -left-4 w-6 h-1 z-0" style={{ transform: 'translateY(-50%)', ...connectorH }} />
+                        <div className="absolute top-1/2 -left-5 z-0 h-1 w-8" style={{ transform: 'translateY(-50%)', ...connectorH }} />
                       )}
                       {i === 5 && (
-                        <div className="absolute -bottom-14 left-1/2 w-1 h-16 z-0" style={{ transform: 'translateX(-50%)', ...connectorV }} />
+                        <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-1" style={{ transform: 'translateX(-50%)', ...connectorV }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -412,7 +385,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                               key={idx}
                               color={player.color}
                               name={player.name}
-                              size={28}
+                              size={BOARD_PIECE_SIZE}
                               animate={animatingPlayer === players.indexOf(player)}
                               emoji={player.emoji}
                             />
@@ -424,12 +397,12 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                 </div>
 
                 {/* Linha 5: 24-30 (esquerda para direita) */}
-                <div className="flex gap-2 mb-4">
+                <div className="mb-4 flex gap-3">
                   {board.slice(24, 31).map((square, i) => (
                     <div key={square.id} className="relative flex-1">
-                      <BoardSquare square={square} size={70} />
+                      <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
                       {i < 6 && (
-                        <div className="absolute top-1/2 -right-4 w-6 h-1 z-0" style={{ transform: 'translateY(-50%)', ...connectorH }} />
+                        <div className="absolute top-1/2 -right-5 z-0 h-1 w-8" style={{ transform: 'translateY(-50%)', ...connectorH }} />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center gap-1">
                         <div className="flex flex-wrap gap-0.5 justify-center max-w-full">
@@ -438,7 +411,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                               key={idx}
                               color={player.color}
                               name={player.name}
-                              size={28}
+                              size={BOARD_PIECE_SIZE}
                               animate={animatingPlayer === players.indexOf(player)}
                               emoji={player.emoji}
                             />
@@ -466,10 +439,10 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                         ? 'bg-primary/15 border-2 border-primary'
                         : 'bg-muted/30 border border-border/30'
                     }`}
-                    style={index === currentPlayer && !winner ? { boxShadow: '0 0 12px hsl(270 60% 55% / 0.3)' } : undefined}
+                    style={index === currentPlayer && !winner ? { boxShadow: '0 0 12px hsl(101 98% 40% / 0.28)' } : undefined}
                   >
                     <div className="flex items-center gap-3">
-                      <PlayerPiece color={player.color} name={player.name} size={36} emoji={player.emoji} />
+                      <PlayerPiece color={player.color} name={player.name} size={SIDEBAR_PIECE_SIZE} emoji={player.emoji} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
                           {index === currentPlayer && !winner && (
@@ -478,7 +451,7 @@ export const GameBoard = ({ players: playerNames, onRestart }: GameBoardProps) =
                           <div className="font-medium text-sm truncate">{player.name}</div>
                         </div>
                         <div className="text-xs text-muted-foreground mb-1">
-                          Casa {player.position}/{TOTAL_SQUARES} · Nível {player.difficultyLevel}
+                          Casa {player.position}/{TOTAL_SQUARES} · Nível {getQuestionLevelName(player.difficultyLevel)}
                         </div>
                         <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                           <div

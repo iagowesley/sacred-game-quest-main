@@ -38,16 +38,12 @@ const Index = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-between py-16 px-4 bg-background">
         {/* Centro — logo e título */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
-          <img
-            src="/cross.svg"
-            alt="A Jornada"
-            className="w-28 h-28 object-contain"
-          />
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center">
+          
 
           <div className="space-y-2">
             <h1 className="text-5xl font-bold text-foreground tracking-tight">
-              A Jornada
+              A jornada
             </h1>
             <p className="text-muted-foreground italic text-lg">
               Uma aventura bíblica
@@ -68,7 +64,7 @@ const Index = () => {
             className="w-full bg-primary hover:bg-primary/90 text-lg py-7 gap-3 transition-all duration-300"
           >
             <WifiHigh size={22} />
-            Jogar Online
+            Jogar online
           </Button>
 
           <Button
@@ -77,7 +73,7 @@ const Index = () => {
             className="w-full border-2 border-primary/40 hover:bg-primary/10 hover:border-primary text-lg py-7 gap-3 transition-all duration-300"
           >
             <UsersThree size={22} />
-            Jogar Local
+            Jogar local
           </Button>
         </div>
       </div>

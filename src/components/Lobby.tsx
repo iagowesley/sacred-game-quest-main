@@ -55,7 +55,8 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
           room_id: roomData.id,
           name: playerName,
           color: PLAYER_COLORS[0],
-          player_order: 0
+          player_order: 0,
+          difficulty_level: 2
         });
 
       if (playerError) throw playerError;
@@ -131,7 +132,8 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
           room_id: roomData.id,
           name: playerName,
           color: PLAYER_COLORS[playersData?.length || 0],
-          player_order: playersData?.length || 0
+          player_order: playersData?.length || 0,
+          difficulty_level: 2
         });
 
       if (playerError) throw playerError;
@@ -158,7 +160,7 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
     return (
       <div
         className="min-h-screen flex flex-col items-center justify-between py-16 px-4"
-        style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}
+        style={{ background: 'radial-gradient(ellipse at center, hsl(220 11% 16%) 0%, hsl(220 13% 9%) 70%)' }}
       >
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="w-full max-w-sm relative bg-card border border-accent/30 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
@@ -171,7 +173,7 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
             <div className="flex flex-col items-center gap-6">
               <BookOpen size={48} className="text-accent/80" />
               <div className="text-center">
-                <h1 className="text-3xl font-bold text-gradient-gold">A Jornada</h1>
+                <h1 className="text-3xl font-bold text-gradient-gold">A jornada</h1>
                 <p className="text-muted-foreground italic text-sm mt-1">Uma aventura bíblica multijogador</p>
               </div>
 
@@ -203,7 +205,7 @@ export const Lobby = ({ onJoinRoom }: LobbyProps) => {
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: 'radial-gradient(ellipse at center, hsl(270 30% 15%) 0%, hsl(270 20% 8%) 70%)' }}
+      style={{ background: 'radial-gradient(ellipse at center, hsl(220 11% 16%) 0%, hsl(220 13% 9%) 70%)' }}
     >
       <div className="w-full max-w-md relative bg-card border border-accent/30 rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-3d)' }}>
         {/* Cantoneiras */}

@@ -1,7 +1,7 @@
 import { Question } from "@/types/game";
 
 export const questions: Question[] = [
-  // NÍVEL 1 - FÁCIL (50 perguntas básicas com maior complexidade)
+  // NÍVEL 1 - ARQUIVADAS (não entram mais no jogo)
   {
     question: "Quem foi o primeiro homem criado por Deus segundo o livro de Gênesis?",
     options: ["Adão", "Noé", "Abraão", "Moisés"],
@@ -303,7 +303,7 @@ export const questions: Question[] = [
     difficulty: 1,
   },
 
-  // NÍVEL 1 — FÁCIL (novas)
+  // NÍVEL 1 — ARQUIVADAS (não entram mais no jogo)
   { question: "Qual é o livro mais longo da Bíblia?", options: ["Gênesis", "Isaías", "Salmos", "Jeremias"], correct: 2, difficulty: 1 },
   { question: "Qual era a profissão de Jesus antes do ministério?", options: ["Pescador", "Agricultor", "Carpinteiro", "Escriba"], correct: 2, difficulty: 1 },
   { question: "Onde Moisés recebeu os Dez Mandamentos?", options: ["Monte Sinai", "Monte Carmelo", "Monte das Oliveiras", "Monte Nebo"], correct: 0, difficulty: 1 },
@@ -1236,6 +1236,30 @@ export const questions: Question[] = [
   { question: "Em Daniel 7, a que reino corresponde o quarto animal (terrível e espantoso)?", options: ["Babilônia", "Pérsia", "Grécia", "Roma"], correct: 3, difficulty: 3 },
   { question: "Qual é o capítulo de Apocalipse que apresenta a mensagem dos três anjos?", options: ["Ap 12", "Ap 13", "Ap 14", "Ap 18"], correct: 2, difficulty: 3 },
   { question: "Quantas cabeças tem a besta que sobe do mar em Apocalipse 13?", options: ["5", "6", "7", "10"], correct: 2, difficulty: 3 },
+
+  // NÍVEL 2 — MÉDIO (elaboradas)
+  { question: "Em Êxodo, qual sequência resume corretamente o chamado de Moisés antes do retorno ao Egito?", options: ["Sarça ardente, sinais dados por Deus, envio com Arão", "Travessia do Mar Vermelho, maná, Sinai", "Nascimento no Nilo, sonho do Faraó, prisão", "Unção por Samuel, fuga de Saul, aliança davídica"], correct: 0, difficulty: 2 },
+  { question: "Na parábola do semeador, o que representa a semente que cai entre espinhos?", options: ["A palavra rejeitada imediatamente por perseguição", "A palavra sufocada por cuidados, riquezas e desejos", "A palavra recebida com perseverança e frutos", "A palavra impedida por falta de entendimento inicial"], correct: 1, difficulty: 2 },
+  { question: "Qual alternativa liga corretamente personagem, crise e resposta de fé?", options: ["Ester, decreto contra os judeus, intercessão diante do rei", "Jonas, exílio em Babilônia, reconstrução dos muros", "Neemias, fome no Egito, interpretação de sonhos", "Rute, perseguição de Jezabel, fogo no Carmelo"], correct: 0, difficulty: 2 },
+  { question: "Em Atos 15, qual foi o tema central discutido no concílio de Jerusalém?", options: ["A substituição de Judas entre os doze", "A necessidade da circuncisão para gentios convertidos", "A coleta para os cristãos de Jerusalém", "A escolha dos sete diáconos"], correct: 1, difficulty: 2 },
+  { question: "Qual detalhe diferencia a multiplicação dos cinco mil da multiplicação dos quatro mil?", options: ["Na dos cinco mil sobraram doze cestos", "Na dos cinco mil não havia peixes", "Na dos quatro mil Jesus não agradeceu", "Na dos quatro mil todos eram samaritanos"], correct: 0, difficulty: 2 },
+  { question: "Segundo Daniel 1, qual atitude marcou Daniel e seus amigos no início do cativeiro?", options: ["Recusaram toda educação babilônica", "Propuseram não se contaminar com a comida do rei", "Fugiram de Babilônia para Jerusalém", "Pediam sinais antes de cada decisão"], correct: 1, difficulty: 2 },
+  { question: "Qual é a relação correta entre as festas judaicas e seu sentido bíblico?", options: ["Páscoa lembra a libertação do Egito", "Pentecostes celebra a queda de Jericó", "Tabernáculos lembra a coroação de Saul", "Expiação celebra o nascimento de Moisés"], correct: 0, difficulty: 2 },
+  { question: "Em João 15, a metáfora da videira ensina principalmente que os discípulos devem:", options: ["Permanecer em Cristo para produzir fruto", "Conquistar posição política em Israel", "Guardar silêncio sobre todos os milagres", "Evitar qualquer contato com estrangeiros"], correct: 0, difficulty: 2 },
+  { question: "Qual profeta confrontou Davi após o pecado envolvendo Bate-Seba e Urias?", options: ["Gade", "Natã", "Samuel", "Aías"], correct: 1, difficulty: 2 },
+  { question: "Qual alternativa descreve melhor o papel de João Batista nos evangelhos?", options: ["Preparar o caminho do Messias chamando ao arrependimento", "Substituir o sacerdócio levítico no templo", "Governar a Galileia antes de Herodes", "Escrever a primeira carta às igrejas da Ásia"], correct: 0, difficulty: 2 },
+
+  // NÍVEL 3 — DIFÍCIL (elaboradas)
+  { question: "Em Daniel 8, qual sequência profética é representada pelo carneiro, pelo bode e pelo chifre pequeno?", options: ["Babilônia, Roma e Grécia", "Medo-Pérsia, Grécia e poder posterior que se engrandece", "Egito, Assíria e Babilônia", "Israel, Edom e Moabe"], correct: 1, difficulty: 3 },
+  { question: "Em Hebreus, qual argumento sustenta a superioridade do sacerdócio de Cristo?", options: ["Ele pertence à ordem de Melquisedeque e ministra em realidade superior", "Ele substitui a fé por genealogia levítica", "Ele oferece sacrifícios diários por seus próprios pecados", "Ele depende do templo terrestre reconstruído"], correct: 0, difficulty: 3 },
+  { question: "Qual alternativa associa corretamente profecia messiânica e referência bíblica?", options: ["Nascimento em Belém, Miqueias 5:2", "Servo sofredor, Malaquias 4:5", "Entrada triunfal, Daniel 2:44", "Nova aliança, Obadias 1:15"], correct: 0, difficulty: 3 },
+  { question: "Na estrutura de Apocalipse 12, qual conflito é apresentado como pano de fundo da perseguição ao povo de Deus?", options: ["A disputa entre Judá e Israel", "A guerra no céu e a atuação do dragão contra a mulher", "A rivalidade entre Roma e Pérsia", "O julgamento de Paulo diante de Festo"], correct: 1, difficulty: 3 },
+  { question: "Em Romanos 4, Paulo usa Abraão para defender qual ponto teológico?", options: ["A justificação pela fé antes da circuncisão", "A salvação pela descendência étnica apenas", "A anulação completa das promessas", "A necessidade de sacrifícios no templo para gentios"], correct: 0, difficulty: 3 },
+  { question: "Qual alternativa descreve corretamente a mensagem dos três anjos de Apocalipse 14?", options: ["Evangelho eterno, juízo, queda de Babilônia e advertência contra a besta", "Reconstrução de Jerusalém, genealogia sacerdotal e retorno do exílio", "Chamado aos sete diáconos, expansão missionária e prisão de Paulo", "Criação dos juízes, monarquia e divisão do reino"], correct: 0, difficulty: 3 },
+  { question: "Em Ezequiel 37, a visão dos ossos secos aponta inicialmente para:", options: ["A restauração de Israel pelo poder vivificador de Deus", "A construção do templo por Salomão", "A queda imediata de Nínive", "O nascimento de João Batista"], correct: 0, difficulty: 3 },
+  { question: "Qual par de livros enfatiza de modo especial a reconstrução pós-exílica em Jerusalém?", options: ["Esdras e Neemias", "Josué e Juízes", "Rute e Ester", "Oseias e Joel"], correct: 0, difficulty: 3 },
+  { question: "Em 1 Coríntios 15, qual doutrina Paulo trata como essencial para a esperança cristã?", options: ["A ressurreição dos mortos em Cristo", "A reconstrução literal de Babel", "A genealogia dos reis persas", "A divisão das tribos ao norte"], correct: 0, difficulty: 3 },
+  { question: "Qual alternativa expressa melhor a tensão central do livro de Jó?", options: ["O sofrimento do justo e a soberania de Deus além de explicações simplistas", "A conquista militar de Canaã por Josué", "A organização das festas anuais em Jerusalém", "A sucessão política entre Saul e Davi"], correct: 0, difficulty: 3 },
 ];
 
 export const challenges: string[] = [
@@ -1391,4 +1415,16 @@ export const challenges: string[] = [
   "Diga o que é o dom de línguas verdadeiro",
   "Explique o que é a ceia do Senhor",
   "Diga o que é o lava-pés e sua importância",
+
+  // Desafios mais elaborados
+  "Explique em até 1 minuto a diferença entre justificação e santificação, dando um exemplo prático",
+  "Escolha uma parábola de Jesus e explique qual problema do coração humano ela confronta",
+  "Defenda, com pelo menos dois textos bíblicos, por que a esperança da ressurreição é central para o cristão",
+  "Explique a mensagem dos três anjos de Apocalipse 14 em linguagem simples para alguém que nunca ouviu sobre o tema",
+  "Compare Daniel na Babilônia com José no Egito e diga uma semelhança espiritual entre os dois",
+  "Conte uma história bíblica sem citar nomes; os outros jogadores devem descobrir qual é",
+  "Explique como o sábado aponta para criação, redenção e relacionamento com Deus",
+  "Diga 3 promessas bíblicas e explique em que situação cada uma poderia ajudar alguém",
+  "Escolha um personagem bíblico que falhou e mostre como Deus ainda trabalhou com ele",
+  "Explique o conflito entre fé e medo usando uma história bíblica específica",
 ];

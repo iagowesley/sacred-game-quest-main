@@ -1,8 +1,8 @@
-# Frontend Redesign — A Jornada Implementation Plan
+# Frontend Redesign — A jornada Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Modernizar completamente o visual do jogo cristão "A Jornada" com paleta roxo+dourado, fonte Inter, ícones Phosphor e tabuleiro 3D realista — sem alterar nenhuma lógica de jogo.
+**Goal:** Modernizar completamente o visual do jogo cristão "A jornada" com paleta roxo+dourado, fonte Inter, ícones Phosphor e tabuleiro 3D realista — sem alterar nenhuma lógica de jogo.
 
 **Architecture:** Todas as mudanças são puramente visuais (CSS, JSX styling, troca de ícones). A lógica de estado, hooks Supabase, dados do jogo e tipos TypeScript não são tocados. Os componentes shadcn/ui em `src/components/ui/` também não são modificados.
 
@@ -589,7 +589,7 @@ export const GameCard = ({ card, onAnswer, onChallengeComplete }: GameCardProps)
           <div className="relative h-28 overflow-hidden bg-gradient-to-br from-primary to-primary/70 flex items-end p-5">
             <BookOpenText size={80} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
             <div className="relative z-10">
-              <h3 className="text-xl font-bold text-white">Pergunta Bíblica</h3>
+              <h3 className="text-xl font-bold text-white">Pergunta íblica</h3>
               <p className="text-sm text-white/75">Responda corretamente para avançar</p>
             </div>
           </div>
@@ -744,7 +744,7 @@ Localizar o bloco do header (começa em `<div className="flex justify-between it
     </div>
     <div>
       <h1 className="text-xl font-bold text-gradient-gold tracking-wide">
-        A Jornada
+        A jornada
       </h1>
       {!winner && (
         <p className="text-xs text-muted-foreground">
@@ -946,7 +946,7 @@ if (mode === 'menu') {
         <div className="animate-glow-pulse">
           <img
             src="/cross.svg"
-            alt="A Jornada"
+            alt="A jornada"
             className="w-28 h-28 object-contain"
             style={{ filter: 'drop-shadow(0 0 20px hsl(45 95% 52% / 0.5))' }}
           />
@@ -954,7 +954,7 @@ if (mode === 'menu') {
 
         <div className="space-y-2">
           <h1 className="text-5xl font-bold text-gradient-gold tracking-tight">
-            A Jornada
+            A jornada
           </h1>
           <p className="text-muted-foreground italic text-lg">
             Uma aventura bíblica
@@ -977,7 +977,7 @@ if (mode === 'menu') {
           style={{ boxShadow: 'var(--shadow-glow)' }}
         >
           <WifiHigh size={22} />
-          Jogar Online
+          Jogar online
         </Button>
 
         <Button
@@ -986,7 +986,7 @@ if (mode === 'menu') {
           className="w-full border-2 border-primary/40 hover:bg-primary/10 hover:border-primary text-lg py-7 gap-3 transition-all duration-300"
         >
           <UsersThree size={22} />
-          Jogar Local
+          Jogar local
         </Button>
       </div>
     </div>
@@ -1052,11 +1052,11 @@ return (
       <div className="text-center mb-8">
         <img
           src="/cross.svg"
-          alt="A Jornada"
+          alt="A jornada"
           className="w-20 h-20 object-contain mx-auto mb-4"
           style={{ filter: 'drop-shadow(0 0 12px hsl(45 95% 52% / 0.4))' }}
         />
-        <h1 className="text-3xl font-bold text-gradient-gold mb-1">A Jornada</h1>
+        <h1 className="text-3xl font-bold text-gradient-gold mb-1">A jornada</h1>
         <p className="text-muted-foreground">Perguntas e desafios sobre a bíblia e a igreja</p>
       </div>
 
@@ -1185,7 +1185,7 @@ if (mode === 'menu') {
           <div className="flex flex-col items-center gap-6">
             <BookOpen size={48} className="text-accent/80" />
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-gradient-gold">A Jornada</h1>
+              <h1 className="text-3xl font-bold text-gradient-gold">A jornada</h1>
               <p className="text-muted-foreground italic text-sm mt-1">Uma aventura bíblica multijogador</p>
             </div>
 
