@@ -15,7 +15,7 @@ const EMOJIS = ['🐶', '🐱', '🦊', '🐻', '🐷', '🐮', '🦁', '🐨'];
 const TOTAL_SQUARES = 30;
 const BOARD_SQUARE_SIZE = 92;
 const BOARD_PIECE_SIZE = 38;
-const SIDEBAR_PIECE_SIZE = 46;
+const SIDEBAR_PIECE_SIZE = 60;
 
 interface DbPlayer {
   id: string;
@@ -230,8 +230,16 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
 
   const getPlayersAtPosition = (pos: number) => dbPlayers.filter(p => p.position === pos);
 
-  const connH = { borderTop: '2px dashed hsl(220 8% 38% / 0.5)', background: 'none' } as React.CSSProperties;
-  const connV = { borderLeft: '2px dashed hsl(220 8% 38% / 0.5)', background: 'none' } as React.CSSProperties;
+  const connH: React.CSSProperties = {
+    background: 'linear-gradient(90deg, hsl(var(--board-trail) / 0.35), hsl(var(--board-trail) / 0.65), hsl(var(--board-trail) / 0.35))',
+    borderRadius: '999px',
+    boxShadow: '0 0 10px hsl(var(--board-trail) / 0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
+  };
+  const connV: React.CSSProperties = {
+    background: 'linear-gradient(180deg, hsl(var(--board-trail) / 0.35), hsl(var(--board-trail) / 0.65), hsl(var(--board-trail) / 0.35))',
+    borderRadius: '999px',
+    boxShadow: '0 0 10px hsl(var(--board-trail) / 0.35), inset 1px 0 0 rgba(255,255,255,0.15)',
+  };
 
   const renderSquares = (squares: BoardSquareType[], reverseConnector: boolean, showVerticalOnLast: boolean) =>
     squares.map((square, i) => {
@@ -241,10 +249,10 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
         <div key={square.id} className="relative flex-1">
           <BoardSquare square={square} size={BOARD_SQUARE_SIZE} />
           {!isLast && (
-            <div className={`absolute top-1/2 ${connSide} z-0 h-1 w-8`} style={{ transform: 'translateY(-50%)', ...connH }} />
+            <div className={`absolute top-1/2 ${connSide} z-0 h-[10px] w-9`} style={{ transform: 'translateY(-50%)', ...connH }} />
           )}
           {isLast && showVerticalOnLast && (
-            <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-1" style={{ transform: 'translateX(-50%)', ...connV }} />
+            <div className="absolute -bottom-[4.5rem] left-1/2 z-0 h-20 w-[10px]" style={{ transform: 'translateX(-50%)', ...connV }} />
           )}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex flex-wrap gap-0.5 justify-center">
@@ -269,22 +277,24 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
     <div className="min-h-screen p-4 flex flex-col items-center justify-center bg-background">
       <div className="mx-auto w-full max-w-[1500px]">
         {/* Header */}
-        <div className="flex justify-between items-center mb-4 bg-card px-5 py-3 rounded-xl border border-border/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <Trophy size={20} weight="fill" className="text-primary-foreground" />
-            </div>
+        <div className="flex justify-between items-center mb-4 bg-card px-6 py-4 rounded-xl border border-border/50">
+          <div className="flex items-center gap-4">
+            <Trophy
+              size={52}
+              weight="fill"
+              className="text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.45)]"
+            />
             <div>
-              <h1 className="text-xl font-bold text-foreground tracking-wide">A jornada — Online</h1>
+              <h1 className="text-2xl font-bold text-foreground tracking-wide leading-tight">A jornada — Online</h1>
               {!winner && currentPlayerData && (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {isMyTurn
                     ? <span className="font-semibold text-primary">Sua vez!</span>
                     : <>Vez de: <span className="font-semibold text-foreground">{currentPlayerData.name}</span></>
                   }
                 </p>
               )}
-              {winner && <p className="text-sm font-bold text-primary animate-pulse">Vencedor: {winner.name}!</p>}
+              {winner && <p className="text-base font-bold text-primary animate-pulse">Vencedor: {winner.name}!</p>}
             </div>
           </div>
           <Button variant="outline" onClick={onRestart} className="border-border/50 hover:bg-primary/10 gap-2 text-sm">
@@ -296,8 +306,21 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Tabuleiro */}
           <div className="lg:col-span-2">
-            <div className="rounded-2xl p-8"
-              style={{ background: 'hsl(220 11% 12%)', border: '2px solid hsl(220 8% 24%)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+            <div className="relative overflow-hidden rounded-2xl p-8"
+              style={{
+                background: 'radial-gradient(ellipse at top, hsl(220 14% 15%) 0%, hsl(220 16% 7%) 100%)',
+                backgroundImage: `
+                  radial-gradient(ellipse at top, hsl(220 14% 15%) 0%, hsl(220 16% 7%) 100%),
+                  radial-gradient(circle at 1px 1px, hsl(101 98% 40% / 0.04) 1px, transparent 1px)
+                `,
+                backgroundSize: '100% 100%, 18px 18px',
+                border: '2px solid hsl(220 8% 24%)',
+                boxShadow: [
+                  '0 8px 32px rgba(0,0,0,0.55)',
+                  'inset 0 0 0 1px hsl(101 98% 40% / 0.12)',
+                  'inset 0 0 50px hsl(220 20% 4% / 0.7)',
+                ].join(', '),
+              }}>
               <div className="relative z-10">
                 <div className="mb-16 flex gap-3">{renderSquares(board.slice(0, 6), false, true)}</div>
                 <div className="mb-16 flex flex-row-reverse gap-3">{renderSquares(board.slice(6, 12), true, true)}</div>
@@ -311,30 +334,30 @@ export const OnlineGameBoard = ({ roomId, myPlayerName, onRestart }: OnlineGameB
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Jogadores */}
-            <Card className="p-4 bg-card border border-border/50">
-              <h3 className="font-bold mb-4 text-sm text-muted-foreground uppercase tracking-wider">Jogadores</h3>
-              <div className="space-y-2">
+            <Card className="p-5 bg-card border border-border/50">
+              <h3 className="font-bold mb-4 text-base text-muted-foreground uppercase tracking-wider">Jogadores</h3>
+              <div className="space-y-3">
                 {dbPlayers.map((player, index) => {
                   const isActive = index === room.current_player_index && !winner;
                   const isMe = player.name === myPlayerName;
                   return (
                     <div key={player.id}
-                      className={`p-3 rounded-lg transition-all ${isActive ? 'bg-primary/15 border-2 border-primary' : 'bg-muted/30 border border-border/30'}`}
-                      style={isActive ? { boxShadow: '0 0 12px hsl(101 98% 40% / 0.28)' } : undefined}>
-                      <div className="flex items-center gap-3">
+                      className={`p-4 rounded-xl transition-all ${isActive ? 'bg-primary/15 border-2 border-primary' : 'bg-muted/30 border border-border/30'}`}
+                      style={isActive ? { boxShadow: '0 0 14px hsl(101 98% 40% / 0.32)' } : undefined}>
+                      <div className="flex items-center gap-4">
                         <PlayerPiece color={player.color} name={player.name} size={SIDEBAR_PIECE_SIZE} emoji={EMOJIS[player.player_order] ?? '🐶'} />
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            {isActive && <Crown size={13} weight="fill" className="text-primary flex-shrink-0" />}
-                            <div className="font-medium text-sm truncate">
-                              {player.name}{isMe && <span className="text-xs text-muted-foreground ml-1">(você)</span>}
+                          <div className="flex items-center gap-2 mb-0.5">
+                            {isActive && <Crown size={16} weight="fill" className="text-primary flex-shrink-0" />}
+                            <div className="font-semibold text-base truncate">
+                              {player.name}{isMe && <span className="text-sm text-muted-foreground ml-1">(você)</span>}
                             </div>
                           </div>
-                          <div className="text-xs text-muted-foreground mb-1">
+                          <div className="text-sm text-muted-foreground mb-2">
                             Casa {player.position}/{TOTAL_SQUARES} · Nível {getQuestionLevelName(player.difficulty_level)}
                           </div>
-                          <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
-                            <div className="h-full bg-primary/60 rounded-full transition-all duration-500"
+                          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                            <div className="h-full bg-primary/70 rounded-full transition-all duration-500"
                               style={{ width: `${(player.position / TOTAL_SQUARES) * 100}%` }} />
                           </div>
                         </div>

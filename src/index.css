@@ -38,10 +38,12 @@
 
     --radius: 0.75rem;
 
-    --board-square: 220 10% 17%;
+    --board-square: 220 10% 24%;
+    --board-square-alt: 220 12% 20%;
     --board-bonus: 101 98% 40%;
     --board-forward: 145 55% 38%;
     --board-back: 0 65% 48%;
+    --board-trail: 101 98% 40%;
 
     --shadow-card:
       0 1px 1px hsl(0 0% 0% / 0.12),

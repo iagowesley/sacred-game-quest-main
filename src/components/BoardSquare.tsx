@@ -16,13 +16,15 @@ export const BoardSquare = ({ square, size = 92 }: BoardSquareProps) => {
   const getBg = () => {
     switch (square.type) {
       case "bonus":
-        return "hsl(var(--board-bonus))";
+        return "linear-gradient(160deg, hsl(var(--board-bonus)) 0%, hsl(101 90% 32%) 100%)";
       case "forward":
-        return "hsl(var(--board-forward))";
+        return "linear-gradient(160deg, hsl(var(--board-forward)) 0%, hsl(145 55% 28%) 100%)";
       case "back":
-        return "hsl(var(--board-back))";
+        return "linear-gradient(160deg, hsl(var(--board-back)) 0%, hsl(0 65% 36%) 100%)";
       default:
-        return isStartOrEnd ? "hsl(var(--board-bonus))" : "hsl(var(--board-square))";
+        return isStartOrEnd
+          ? "linear-gradient(160deg, hsl(var(--board-bonus)) 0%, hsl(101 90% 32%) 100%)"
+          : "linear-gradient(160deg, hsl(var(--board-square)) 0%, hsl(var(--board-square-alt)) 100%)";
     }
   };
 
@@ -63,12 +65,12 @@ export const BoardSquare = ({ square, size = 92 }: BoardSquareProps) => {
         height: size,
         background: getBg(),
         borderRadius: "14px",
-        border: "1px solid rgba(255,255,255,0.08)",
+        border: "1px solid rgba(255,255,255,0.12)",
         boxShadow: [
-          "inset 0 2px 4px rgba(255,255,255,0.15)",
-          "inset 0 -2px 4px rgba(0,0,0,0.4)",
-          "0 4px 0 rgba(0,0,0,0.5)",
-          "0 6px 12px rgba(0,0,0,0.4)",
+          "inset 0 2px 4px rgba(255,255,255,0.18)",
+          "inset 0 -3px 6px rgba(0,0,0,0.45)",
+          "0 4px 0 rgba(0,0,0,0.55)",
+          "0 8px 14px rgba(0,0,0,0.45)",
           glowColor(),
         ]
           .filter(Boolean)
